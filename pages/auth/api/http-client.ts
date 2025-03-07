@@ -12,10 +12,7 @@ const client: KyInstance = ky.create({
         const cookieStore = cookies();
         const accessToken = await cookieStore.get("accessToken")?.value;
         if (accessToken) {
-          request.headers.set(
-            "Authorization",
-            `Bearer ${`eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzQxMzY0MzQ1LCJleHAiOjE3NDEzNjYxNDV9.Z8K8Ci1gv1Qvo4Dzo1qtRDdBCO8WAcTHw4JrDj-_Oq3IQQMou2B9TR0s18SgnGDWwV-AD40CsniV3GuYpxkpvg`}`
-          );
+          request.headers.set("Authorization", `Bearer ${accessToken}`);
         }
       },
     ],
