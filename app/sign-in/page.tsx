@@ -5,39 +5,19 @@ import React, { useEffect } from "react";
 
 export default function SignInPage() {
   const handleGoogleSignIn = () => {
-    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-    const redirectUri = `${window.location.origin}/api/auth/callback/google`;
-    const scope = "openid email profile";
-    const responseType = "code";
+    const urlSearchParams = new URLSearchParams({
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+      redirect_uri: `${window.location.origin}/api/auth/callback/google`,
+      response_type: "code",
+      scope: "openid email profile",
+    });
 
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
+    const oauthUrl = `${
+      process.env.NEXT_PUBLIC_GOOGLE_OAUTH_URI
+    }?${urlSearchParams.toString()}`;
 
-    window.location.href = authUrl;
+    window.location.href = oauthUrl;
   };
-
-  useEffect(() => {
-    async function exchangeCodeForTokens(code: string) {
-      try {
-        const response = await ky
-          .post("https://oauth2.googleapis.com/token", {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams({
-              client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-              code,
-              grant_type: "authorization_code",
-              redirect_uri: "http://localhost:3000/api/auth/callback/google",
-            }),
-          })
-          .json();
-
-        console.log("Tokens:", response);
-      } catch (error) {
-        console.error("Error exchanging code for tokens:", error);
-      }
-    }
-  }, []);
 
   return (
     <div className="flex min-h-screen items-center justify-center">
