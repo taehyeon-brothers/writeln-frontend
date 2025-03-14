@@ -6,8 +6,8 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@/pages/base/components/avatar";
-import { Card } from "@/pages/base/components/card";
+} from "@/src/base/components/avatar";
+import { Card } from "@/src/base/components/card";
 import { cn } from "@/lib/utils";
 
 type Post = {
@@ -22,7 +22,27 @@ type Post = {
   locked: boolean;
 };
 
-export default function FeedContent() {
+export type FeedState = {
+  status: "loading" | "error" | "success";
+  error: string | null;
+  posts: Post[];
+};
+
+interface FeedContentProps {
+  setFeedStateForStory?: (state: FeedState) => void;
+  initialState?: "loading" | "error" | "success" | "empty";
+  isStorybook?: boolean;
+}
+
+export default function FeedContent({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setFeedStateForStory: _setFeedStateForStory,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  initialState: _initialState,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isStorybook: _isStorybook,
+}: FeedContentProps = {}) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [posts, setPosts] = useState<Post[]>([
     {
       id: "1",
@@ -95,6 +115,7 @@ export default function FeedContent() {
                 </div>
                 <div className="relative">
                   <div className="aspect-[4/3] w-full bg-gradient-to-br from-blue-200 to-purple-200 blur-sm">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={post.imageUrl || "/placeholder.svg"}
                       alt="Post content"

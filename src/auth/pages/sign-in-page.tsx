@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/pages/base/components/button";
+import { Button } from "@/src/base/components/button";
 
 export default function SignInPage() {
   const handleGoogleSignIn = () => {

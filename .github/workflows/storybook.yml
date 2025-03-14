@@ -1,0 +1,30 @@
+name: Storybook Tests
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  storybook-test:
+    name: Run Storybook Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.11.0
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Storybook tests
+        run: yarn test-storybook:ci
