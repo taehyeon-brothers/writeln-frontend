@@ -24,7 +24,6 @@ export async function GET(request: NextRequest) {
       .json<{ accessToken: string; refreshToken: string }>();
 
     const cookieStore = await cookies();
-    console.log("accessToken", accessToken);
     cookieStore.set("accessToken", accessToken, {
       httpOnly: true,
       secure: true,
