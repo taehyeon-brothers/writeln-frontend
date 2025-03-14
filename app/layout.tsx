@@ -1,3 +1,5 @@
+import "@/pages/base/util/globals.css";
+
 export default function RootLayout({
   children,
 }: {
