@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { loginWithGoogle } from "../../../../../src/auth/apis";
-
+import { REDIRECT_URL } from "../../../../../src/base/apis/constants";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
@@ -13,10 +13,9 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const redirectUri = `${process.env.NEXT_PUBLIC_REDIRECT_URI}/api/auth/callback/google`;
     const { accessToken, refreshToken } = await loginWithGoogle(
       code,
-      redirectUri
+      REDIRECT_URL
     );
 
     const cookieStore = await cookies();
