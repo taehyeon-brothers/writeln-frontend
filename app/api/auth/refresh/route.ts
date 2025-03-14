@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import ky from "ky";
+import { refresh } from "../../../../src/auth/apis";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -14,11 +14,7 @@ export async function GET(request: Request) {
 
   try {
     const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
-      await ky
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/v1/login/refresh`, {
-          json: { refreshToken },
-        })
-        .json<{ accessToken: string; refreshToken: string }>();
+      await refresh(refreshToken);
 
     cookieStore.set("accessToken", newAccessToken);
     cookieStore.set("refreshToken", newRefreshToken);

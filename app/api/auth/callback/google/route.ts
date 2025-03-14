@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import ky from "ky";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { loginWithGoogle } from "../../../../../src/auth/apis";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -13,15 +13,11 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const { accessToken, refreshToken } = await ky
-      .post(`${process.env.NEXT_PUBLIC_API_URL}/v1/login/google`, {
-        json: {
-          code,
-          redirectUri: `${process.env.NEXT_PUBLIC_REDIRECT_URI}/auth/callback/google`,
-        },
-        credentials: "include",
-      })
-      .json<{ accessToken: string; refreshToken: string }>();
+    const redirectUri = `${process.env.NEXT_PUBLIC_REDIRECT_URI}/api/auth/callback/google`;
+    const { accessToken, refreshToken } = await loginWithGoogle(
+      code,
+      redirectUri
+    );
 
     const cookieStore = await cookies();
     cookieStore.set("accessToken", accessToken, {
