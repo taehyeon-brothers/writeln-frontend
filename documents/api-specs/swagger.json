@@ -1,0 +1,668 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Match Real API",
+    "description": "Match Real 서비스의 API 문서",
+    "version": "v1.0.0"
+  },
+  "servers": [
+    { "url": "https://api.matchreal.shop", "description": "Production" }
+  ],
+  "paths": {
+    "/api/v1/login/refresh": {
+      "post": {
+        "tags": ["auth-controller"],
+        "operationId": "refreshToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RefreshTokenRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "4xx or 5xx": {
+            "description": "데이터베이스 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "4xx": {
+            "description": "네트워크 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "5xx": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/TokenResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/login/google": {
+      "post": {
+        "tags": ["auth-controller"],
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthorizationCodeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "4xx or 5xx": {
+            "description": "데이터베이스 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "4xx": {
+            "description": "네트워크 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "5xx": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/TokenResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/daily": {
+      "post": {
+        "tags": ["daily-controller"],
+        "operationId": "uploadDaily",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": ["file"],
+                "type": "object",
+                "properties": {
+                  "file": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "4xx or 5xx": {
+            "description": "데이터베이스 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "4xx": {
+            "description": "네트워크 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "5xx": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/DailyUploadResponse" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    },
+    "/api/v1/daily/{dailyId}/tag": {
+      "post": {
+        "tags": ["daily-controller"],
+        "operationId": "addTagByUser",
+        "parameters": [
+          {
+            "name": "dailyId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TagAddRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "4xx or 5xx": {
+            "description": "데이터베이스 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "4xx": {
+            "description": "네트워크 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "5xx": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/AddTagResponse" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "tags": ["user-controller"],
+        "operationId": "getProfile",
+        "responses": {
+          "4xx or 5xx": {
+            "description": "데이터베이스 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "4xx": {
+            "description": "네트워크 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "5xx": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/UserResponse" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      },
+      "patch": {
+        "tags": ["user-controller"],
+        "operationId": "updateProfile",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateUserRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "4xx or 5xx": {
+            "description": "데이터베이스 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "4xx": {
+            "description": "네트워크 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "5xx": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/UserResponse" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    },
+    "/api/v1/users/{userId}": {
+      "get": {
+        "tags": ["user-controller"],
+        "operationId": "getOtherProfile",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "4xx or 5xx": {
+            "description": "데이터베이스 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "4xx": {
+            "description": "네트워크 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "5xx": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/UserResponse" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    },
+    "/api/v1/daily/{dailyId}": {
+      "get": {
+        "tags": ["daily-controller"],
+        "operationId": "getDaily",
+        "parameters": [
+          {
+            "name": "dailyId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "4xx or 5xx": {
+            "description": "데이터베이스 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "4xx": {
+            "description": "네트워크 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "5xx": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "type": "string", "format": "binary" } }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    },
+    "/api/health": {
+      "get": {
+        "tags": ["Health Check"],
+        "summary": "서버 상태 확인",
+        "operationId": "checkHealth",
+        "responses": {
+          "4xx or 5xx": {
+            "description": "데이터베이스 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "4xx": {
+            "description": "네트워크 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "5xx": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/HealthCheckResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/logout": {
+      "delete": {
+        "tags": ["auth-controller"],
+        "operationId": "logout",
+        "responses": {
+          "4xx or 5xx": {
+            "description": "데이터베이스 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "4xx": {
+            "description": "네트워크 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "5xx": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/Unit" } }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    },
+    "/api/v1/daily/{dailyId}/tag/{tagId}": {
+      "delete": {
+        "tags": ["daily-controller"],
+        "operationId": "removeTagByUser",
+        "parameters": [
+          {
+            "name": "dailyId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TagRemoveRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "4xx or 5xx": {
+            "description": "데이터베이스 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "4xx": {
+            "description": "네트워크 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "5xx": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/Unit" } }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "required": ["code", "errors", "message", "path", "timestamp"],
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "description": "에러 발생 시간",
+            "format": "date-time"
+          },
+          "code": { "type": "string", "description": "에러 코드" },
+          "message": { "type": "string", "description": "에러 메시지" },
+          "path": {
+            "type": "string",
+            "description": "에러가 발생한 요청 경로"
+          },
+          "errors": {
+            "type": "array",
+            "description": "필드 에러 목록",
+            "items": { "$ref": "#/components/schemas/FieldError" }
+          }
+        },
+        "description": "에러 응답 객체"
+      },
+      "FieldError": {
+        "required": ["field", "reason"],
+        "type": "object",
+        "properties": {
+          "field": { "type": "string", "description": "에러가 발생한 필드명" },
+          "value": {
+            "type": "object",
+            "description": "에러가 발생한 필드의 값"
+          },
+          "reason": { "type": "string", "description": "에러 이유" }
+        },
+        "description": "필드 에러 정보"
+      },
+      "RefreshTokenRequest": {
+        "required": ["refreshToken"],
+        "type": "object",
+        "properties": { "refreshToken": { "type": "string" } }
+      },
+      "TokenResponse": {
+        "required": ["accessToken", "refreshToken"],
+        "type": "object",
+        "properties": {
+          "accessToken": { "type": "string" },
+          "refreshToken": { "type": "string" }
+        }
+      },
+      "AuthorizationCodeRequest": {
+        "required": ["code", "redirectUri"],
+        "type": "object",
+        "properties": {
+          "code": { "type": "string" },
+          "redirectUri": { "type": "string" }
+        }
+      },
+      "DailyUploadResponse": {
+        "required": ["dailyId"],
+        "type": "object",
+        "properties": { "dailyId": { "type": "integer", "format": "int64" } }
+      },
+      "TagAddRequest": {
+        "required": ["tagName"],
+        "type": "object",
+        "properties": { "tagName": { "type": "string" } }
+      },
+      "AddTagResponse": {
+        "required": ["tagId", "tagName"],
+        "type": "object",
+        "properties": {
+          "tagId": { "type": "integer", "format": "int64" },
+          "tagName": { "type": "string" }
+        }
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "properties": {
+          "nickname": { "type": "string" },
+          "gender": { "type": "string", "enum": ["MALE", "FEMALE", "OTHER"] },
+          "age": { "type": "integer", "format": "int32" },
+          "introduction": { "type": "string" },
+          "openChatUrl": { "type": "string" }
+        }
+      },
+      "UserResponse": {
+        "required": ["createdAt", "email", "id", "nickname", "updatedAt"],
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "nickname": { "type": "string" },
+          "email": { "type": "string" },
+          "age": { "type": "integer", "format": "int32" },
+          "gender": { "type": "string", "enum": ["MALE", "FEMALE", "OTHER"] },
+          "introduction": { "type": "string" },
+          "profileImageUrl": { "type": "string" },
+          "openChatUrl": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "HealthCheckResponse": {
+        "required": ["message", "status"],
+        "type": "object",
+        "properties": {
+          "status": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      },
+      "Unit": { "type": "object" },
+      "TagRemoveRequest": {
+        "required": ["tagId"],
+        "type": "object",
+        "properties": { "tagId": { "type": "integer", "format": "int64" } }
+      }
+    },
+    "securitySchemes": {
+      "JWT": {
+        "type": "http",
+        "description": "JWT 토큰을 입력해주세요.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

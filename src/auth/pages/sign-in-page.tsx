@@ -1,12 +1,13 @@
 "use client";
 
+import { REDIRECT_URL } from "@/src/base/apis/constants";
 import { Button } from "@/src/base/components/button";
 
 export default function SignInPage() {
   const handleGoogleSignIn = () => {
     const urlSearchParams = new URLSearchParams({
       client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-      redirect_uri: `${window.location.origin}/api/auth/callback/google`,
+      redirect_uri: REDIRECT_URL,
       response_type: "code",
       scope: "openid email profile",
     });
