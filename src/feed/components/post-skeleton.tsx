@@ -1,5 +1,5 @@
-import { Skeleton } from "@/pages/base/components/skeleton";
-import { Card } from "@/pages/base/components/card";
+import { Skeleton } from "@/src/base/components/skeleton";
+import { Card } from "@/src/base/components/card";
 
 export function PostSkeleton() {
   return (

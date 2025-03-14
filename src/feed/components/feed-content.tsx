@@ -6,8 +6,8 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@/pages/base/components/avatar";
-import { Card } from "@/pages/base/components/card";
+} from "@/src/base/components/avatar";
+import { Card } from "@/src/base/components/card";
 import { cn } from "@/lib/utils";
 
 type Post = {

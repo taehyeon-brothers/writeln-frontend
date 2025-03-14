@@ -5,8 +5,8 @@ import {
   Alert,
   AlertTitle,
   AlertDescription,
-} from "@/pages/base/components/alert";
-import { Button } from "@/pages/base/components/button";
+} from "@/src/base/components/alert";
+import { Button } from "@/src/base/components/button";
 
 interface ErrorMessageProps {
   title?: string;

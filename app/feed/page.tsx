@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import FeedContent from "@/pages/feed/components/feed-content";
+import FeedContent from "@/src/feed/components/feed-content";
 
 export const metadata: Metadata = {
   title: "MatchReal - Feed",
