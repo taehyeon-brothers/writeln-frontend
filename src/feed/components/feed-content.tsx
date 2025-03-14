@@ -115,6 +115,7 @@ export default function FeedContent({
                 </div>
                 <div className="relative">
                   <div className="aspect-[4/3] w-full bg-gradient-to-br from-blue-200 to-purple-200 blur-sm">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={post.imageUrl || "/placeholder.svg"}
                       alt="Post content"

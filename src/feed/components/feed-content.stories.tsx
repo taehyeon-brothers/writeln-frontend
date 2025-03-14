@@ -365,6 +365,7 @@ const DirectStateControl = ({
                   <div className="overflow-hidden rounded-3xl bg-white p-0 shadow-sm">
                     <div className="flex items-center gap-3 p-4">
                       <div className="h-10 w-10 overflow-hidden rounded-full border border-[#d9d9d9]">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={post.user.avatar || "/placeholder.svg"}
                           alt={post.user.name}
@@ -380,6 +381,7 @@ const DirectStateControl = ({
                     </div>
                     <div className="relative">
                       <div className="aspect-[4/3] w-full bg-gradient-to-br from-blue-200 to-purple-200 blur-sm">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={post.imageUrl || "/placeholder.svg"}
                           alt="게시물 내용"
