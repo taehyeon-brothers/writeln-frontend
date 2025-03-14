@@ -1,7 +1,6 @@
 "use client";
 
-import ky from "ky";
-import React, { useEffect } from "react";
+import { Button } from "@/pages/base/components/button";
 
 export default function SignInPage() {
   const handleGoogleSignIn = () => {
@@ -20,13 +19,22 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <button
-        onClick={handleGoogleSignIn}
-        className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-      >
-        Sign in with Google
-      </button>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#fef2f2] px-4">
+      <div className="w-full max-w-md space-y-16 text-center">
+        <div className="space-y-4">
+          <h1 className="text-4xl font-bold text-[#450c18] md:text-5xl">
+            MatchReal<span className="text-[#450c18]">.</span>
+          </h1>
+          <p className="text-lg text-[#450c18]">결이 맞는 사람을 만나보세요.</p>
+        </div>
+
+        <Button
+          onClick={handleGoogleSignIn}
+          className="w-full rounded-full bg-[#e15260] py-6 text-[#fefbfb] hover:bg-[#e15260]/90"
+        >
+          구글로 로그인하기
+        </Button>
+      </div>
     </div>
   );
 }
