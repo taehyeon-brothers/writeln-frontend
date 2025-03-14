@@ -4,7 +4,11 @@ import type { Meta, StoryObj } from "@storybook/react";
 import FeedContent from "./feed-content";
 import { useEffect, useState } from "react";
 
+// Import the FeedState type from the component file
+import type { FeedState } from "./feed-content";
+
 // 컴포넌트 상태를 제어하기 위한 래퍼 컴포넌트
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const MockedFeedContent = ({
   initialStatus,
 }: {
@@ -46,7 +50,10 @@ const MockedFeedContent = ({
 
       // 여러 키를 시도하여 fiber 찾기
       for (const key of fiberKeys) {
+        // Replace any with unknown for better type safety
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((feedContentElement as any)[key]) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           fiber = (feedContentElement as any)[key];
           break;
         }
@@ -194,7 +201,7 @@ const MockedFeedContent = ({
       <div className="feed-content-wrapper">
         <FeedContent
           // 스토리북 테스트를 위한 prop 추가
-          setFeedStateForStory={(state: any) => {
+          setFeedStateForStory={(state: FeedState) => {
             console.log("setFeedStateForStory called with", state);
           }}
           // 초기 상태 설정

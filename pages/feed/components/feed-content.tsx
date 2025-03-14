@@ -22,7 +22,27 @@ type Post = {
   locked: boolean;
 };
 
-export default function FeedContent() {
+export type FeedState = {
+  status: "loading" | "error" | "success";
+  error: string | null;
+  posts: Post[];
+};
+
+interface FeedContentProps {
+  setFeedStateForStory?: (state: FeedState) => void;
+  initialState?: "loading" | "error" | "success" | "empty";
+  isStorybook?: boolean;
+}
+
+export default function FeedContent({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setFeedStateForStory: _setFeedStateForStory,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  initialState: _initialState,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isStorybook: _isStorybook,
+}: FeedContentProps = {}) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [posts, setPosts] = useState<Post[]>([
     {
       id: "1",
