@@ -1,7 +1,7 @@
 "use client";
 
 import type { Meta, StoryObj } from "@storybook/react";
-import FeedContent from "@/pages/feed/components/feed-content";
+import FeedContent from "./feed-content";
 import { useEffect, useState } from "react";
 
 // 컴포넌트 상태를 제어하기 위한 래퍼 컴포넌트
