@@ -38,6 +38,6 @@ export async function GET(request: NextRequest) {
     console.error("Error exchanging code for tokens:", error);
     return NextResponse.json({ error: "Bad Request" }, { status: 400 });
   } finally {
-    redirect(new URL("/hello", request.url).toString());
+    redirect(new URL("/", request.url).toString());
   }
 }
