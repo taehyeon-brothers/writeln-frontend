@@ -17,7 +17,7 @@ export async function refresh(refreshToken: string): Promise<TokenResponse> {
   const data: RefreshTokenRequest = { refreshToken };
 
   return await ky
-    .post(`${API_URL}/api/v1/login/refresh`, {
+    .post(`${API_URL}/login/refresh`, {
       json: data,
       credentials: "include",
     })
@@ -37,7 +37,7 @@ export async function loginWithGoogle(
   const data: AuthorizationCodeRequest = { code, redirectUri };
 
   return await ky
-    .post(`${API_URL}/api/v1/login/google`, {
+    .post(`${API_URL}/login/google`, {
       json: data,
       credentials: "include",
     })

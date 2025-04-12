@@ -10,7 +10,7 @@ export async function getCurrentUserProfile(
   accessToken?: string
 ): Promise<UserResponse> {
   return await client
-    .get("api/v1/users/me", {
+    .get("users/me", {
       hooks: accessToken
         ? {
             beforeRequest: [
@@ -33,9 +33,7 @@ export async function getCurrentUserProfile(
 export async function updateUserProfile(
   data: UpdateUserRequest
 ): Promise<UserResponse> {
-  return await client
-    .patch("api/v1/users", { json: data })
-    .json<UserResponse>();
+  return await client.patch("users", { json: data }).json<UserResponse>();
 }
 
 /**
@@ -46,5 +44,5 @@ export async function updateUserProfile(
 export async function getUserProfileById(
   userId: number
 ): Promise<UserResponse> {
-  return await client.get(`api/v1/users/${userId}`).json<UserResponse>();
+  return await client.get(`users/${userId}`).json<UserResponse>();
 }
