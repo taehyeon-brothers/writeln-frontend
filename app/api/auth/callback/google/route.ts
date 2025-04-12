@@ -39,12 +39,12 @@ export async function GET(request: NextRequest) {
     const userProfile = await getCurrentUserProfile(accessToken);
 
     if (!checkProfileCompletion(userProfile)) {
-      redirect(new URL("/profile/edit", request.url).toString());
+      return NextResponse.redirect(new URL("/profile/edit", request.url));
     }
+
+    return NextResponse.redirect(new URL("/", request.url));
   } catch (error) {
     console.error("Error exchanging code for tokens:", error);
-    return NextResponse.json({ error: "Bad Request" }, { status: 400 });
-  } finally {
-    redirect(new URL("/", request.url).toString());
+    return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 }
