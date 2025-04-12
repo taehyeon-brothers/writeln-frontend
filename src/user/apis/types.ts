@@ -10,11 +10,11 @@ export interface UserResponse {
   id: number;
   nickname: string;
   email: string;
-  age?: number;
-  gender?: "MALE" | "FEMALE" | "OTHER";
-  introduction?: string;
-  profileImageUrl?: string;
-  openChatUrl?: string;
+  age: number | null;
+  gender: "MALE" | "FEMALE" | "OTHER" | null;
+  introduction: string | null;
+  profileImageUrl: string | null;
+  openChatUrl: string | null;
   createdAt: string;
   updatedAt: string;
 }
