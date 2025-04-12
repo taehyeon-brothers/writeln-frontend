@@ -6,7 +6,7 @@ import type { UpdateUserRequest, UserResponse } from "./types";
  * @returns Promise with the user profile
  */
 export async function getCurrentUserProfile(): Promise<UserResponse> {
-  return await client.get("api/v1/users").json<UserResponse>();
+  return await client.get("api/v1/users/me").json<UserResponse>();
 }
 
 /**
