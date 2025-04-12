@@ -13,7 +13,18 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // For all other routes, we'll add authentication check in the next step
+  // Check for accessToken in cookies
+  const accessToken = request.cookies.get("accessToken");
+
+  // If no accessToken is found, redirect to sign-in
+  if (!accessToken) {
+    const signInUrl = new URL("/sign-in", request.url);
+    // Add the current path as a redirect parameter
+    signInUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(signInUrl);
+  }
+
+  // If accessToken exists, allow the request to proceed
   return NextResponse.next();
 }
 
