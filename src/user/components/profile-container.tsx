@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ProfileForm } from "./profile-form";
 import { getCurrentUserProfile, updateUserProfile } from "@/src/user/apis";
 import type { UserResponse } from "@/src/user/apis/types";
@@ -24,20 +24,20 @@ export function ProfileContainer() {
     }
   };
 
-  const handleSave = async (data: {
-    nickname: string;
-    introduction: string;
-  }) => {
-    try {
-      setIsLoading(true);
-      await updateUserProfile(data);
-      toast.success("프로필이 저장되었습니다.");
-    } catch (error) {
-      toast.error("프로필 저장 중 오류가 발생했습니다.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const handleSave = useCallback(
+    async (data: { nickname: string; introduction: string }) => {
+      try {
+        setIsLoading(true);
+        await updateUserProfile(data);
+        toast.success("프로필이 저장되었습니다.");
+      } catch (error) {
+        toast.error("프로필 저장 중 오류가 발생했습니다.");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
 
   if (isLoading && !profileData) {
     return <div>로딩 중...</div>;
