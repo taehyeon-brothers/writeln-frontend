@@ -36,17 +36,16 @@ export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
+    // 프로필 데이터가 로드되었는지 확인
     await waitFor(
       () => {
-        expect(canvas.queryByRole("status")).not.toBeInTheDocument();
+        const nicknameInput = canvas.getByRole("textbox", {
+          name: /이름/i,
+        });
+        expect(nicknameInput).toHaveValue(TAYLOR_SWIFT_PROFILE.nickname);
       },
-      { timeout: 5000 }
+      { timeout: 1000 }
     );
-
-    // 프로필 데이터가 로드되었는지 확인
-    const nicknameInput = await canvas.findByRole("textbox", { name: /이름/i });
-    console.log(nicknameInput);
-    expect(nicknameInput).toHaveValue(TAYLOR_SWIFT_PROFILE.nickname);
 
     const introductionTextarea = await canvas.findByRole("textbox", {
       name: /자기 소개/i,
