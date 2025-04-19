@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Header from "@/src/base/components/header";
 import Footer from "@/src/base/components/footer";
-import { ProfileContainer } from "../components/ProfileContainer";
+import { ProfileContainer } from "../components/profile-container";
 
 export default function ProfileEditPage() {
   const [activeTab, setActiveTab] = useState<"home" | "messages" | "profile">(
