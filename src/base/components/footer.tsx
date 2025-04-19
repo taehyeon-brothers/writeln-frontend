@@ -15,7 +15,7 @@ export default function Footer({ activeTab, onTabChange }: FooterProps) {
         onClick={() => onTabChange("home")}
         className={cn(
           "flex flex-col items-center rounded-md p-2",
-          activeTab === "home" ? "text-[#cc3249]" : "text-[#450c18]"
+          activeTab === "home" ? "text-red-600" : "text-red-950"
         )}
         aria-label="Home"
         aria-current={activeTab === "home" ? "page" : undefined}
@@ -26,7 +26,7 @@ export default function Footer({ activeTab, onTabChange }: FooterProps) {
         onClick={() => onTabChange("messages")}
         className={cn(
           "flex flex-col items-center rounded-md p-2",
-          activeTab === "messages" ? "text-[#cc3249]" : "text-[#450c18]"
+          activeTab === "messages" ? "text-red-600" : "text-red-950"
         )}
         aria-label="Messages"
         aria-current={activeTab === "messages" ? "page" : undefined}
@@ -37,7 +37,7 @@ export default function Footer({ activeTab, onTabChange }: FooterProps) {
         onClick={() => onTabChange("profile")}
         className={cn(
           "flex flex-col items-center rounded-md p-2",
-          activeTab === "profile" ? "text-[#cc3249]" : "text-[#450c18]"
+          activeTab === "profile" ? "text-red-600" : "text-red-950"
         )}
         aria-label="Profile"
         aria-current={activeTab === "profile" ? "page" : undefined}
