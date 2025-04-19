@@ -1,3 +1,5 @@
+import FeedContent from "@/src/feed/components/feed-content";
+
 export default function Page() {
-  return <h1>Hello, Next.js!</h1>;
+  return <FeedContent />;
 }
