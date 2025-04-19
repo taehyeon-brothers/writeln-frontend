@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Home, MessageCircle, User } from "lucide-react";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
 import { Input } from "@/src/base/components/input";
 import { Textarea } from "@/src/base/components/textarea";
 import { Label } from "@/src/base/components/label";
@@ -16,6 +13,7 @@ import {
 } from "@/src/base/components/select";
 import { Button } from "@/src/base/components/button";
 import Header from "@/src/base/components/header";
+import Footer from "@/src/base/components/footer";
 import { updateProfileAction } from "../actions/profile";
 import type { UpdateUserRequest } from "../apis/types";
 import { useRouter } from "next/navigation";
@@ -211,41 +209,7 @@ export default function ProfileCreatePage() {
         </form>
       </div>
 
-      <nav className="sticky bottom-0 z-10 flex items-center justify-around border-t border-[#d9d9d9] bg-white py-3">
-        <Link
-          href="/"
-          className={cn(
-            "flex flex-col items-center rounded-md p-2",
-            activeTab === "home" ? "text-[#cc3249]" : "text-red-950"
-          )}
-          aria-label="Home"
-          onClick={() => setActiveTab("home")}
-        >
-          <Home size={24} />
-        </Link>
-        <Link
-          href="/messages"
-          className={cn(
-            "flex flex-col items-center rounded-md p-2",
-            activeTab === "messages" ? "text-[#cc3249]" : "text-red-950"
-          )}
-          aria-label="Messages"
-          onClick={() => setActiveTab("messages")}
-        >
-          <MessageCircle size={24} />
-        </Link>
-        <Link
-          href="/profile"
-          className={cn(
-            "flex flex-col items-center rounded-md p-2",
-            activeTab === "profile" ? "text-[#cc3249]" : "text-red-950"
-          )}
-          aria-label="Profile"
-          onClick={() => setActiveTab("profile")}
-        >
-          <User size={24} />
-        </Link>
-      </nav>
+      <Footer activeTab={activeTab} onTabChange={setActiveTab} />
     </main>
   );
 }
