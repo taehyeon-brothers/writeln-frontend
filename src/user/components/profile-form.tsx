@@ -2,7 +2,7 @@ import { Input } from "@/src/base/components/input";
 import { Label } from "@/src/base/components/label";
 import { Textarea } from "@/src/base/components/textarea";
 import { useEffect, useState } from "react";
-import { useDebounce } from "@/src/hooks/useDebounce";
+import { useDebounce } from "@/src/hooks/use-debounce";
 import Image from "next/image";
 
 interface ProfileFormProps {

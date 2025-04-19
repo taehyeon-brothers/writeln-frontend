@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ProfileForm } from "./ProfileForm";
+import { ProfileForm } from "./profile-form";
 import { expect, userEvent, within } from "@storybook/test";
 
 const PROFILE_IMAGE_URL =

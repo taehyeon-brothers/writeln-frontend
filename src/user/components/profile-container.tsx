@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ProfileForm } from "./ProfileForm";
+import { ProfileForm } from "./profile-form";
 import { getCurrentUserProfile, updateUserProfile } from "@/src/user/apis";
 import type { UserResponse } from "@/src/user/apis/types";
 import { toast } from "sonner";
