@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Bell, Camera, Home, MessageCircle, User } from "lucide-react";
+import { Home, MessageCircle, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Input } from "@/src/base/components/input";
@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/src/base/components/select";
 import { Button } from "@/src/base/components/button";
+import Header from "@/src/base/components/header";
 import { updateProfileAction } from "../actions/profile";
 import type { UpdateUserRequest } from "../apis/types";
 import { useRouter } from "next/navigation";
@@ -88,25 +89,16 @@ export default function ProfileCreatePage() {
 
   return (
     <main className="flex min-h-screen flex-col bg-[#fef2f2]">
-      <header className="sticky top-0 z-10 flex items-center justify-between bg-red-50 px-4 py-3">
-        <h1 className="text-3xl font-bold text-red-950">
-          MatchReal<span className="text-red-950">.</span>
-        </h1>
-        <div className="flex items-center gap-4">
-          <button
-            aria-label="Notifications"
-            className="rounded-full p-1 text-red-950 hover:bg-red-950/10"
-          >
-            <Bell size={24} />
-          </button>
-          <button
-            aria-label="Camera"
-            className="rounded-full p-1 text-[#cc3249] hover:bg-[#cc3249]/10"
-          >
-            <Camera size={24} />
-          </button>
-        </div>
-      </header>
+      <Header
+        onNotificationClick={() => {
+          // TODO: Implement notification click handler
+          console.log("Notification clicked");
+        }}
+        onCameraClick={() => {
+          // TODO: Implement camera click handler
+          console.log("Camera clicked");
+        }}
+      />
 
       <div className="flex-1 px-4 py-4">
         <h2 className="mb-4 text-2xl font-bold text-red-950">프로필 수정</h2>
