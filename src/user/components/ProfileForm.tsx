@@ -3,11 +3,13 @@ import { Label } from "@/src/base/components/label";
 import { Textarea } from "@/src/base/components/textarea";
 import { useEffect, useState } from "react";
 import { useDebounce } from "@/src/hooks/useDebounce";
+import Image from "next/image";
 
 interface ProfileFormProps {
   initialData?: {
     nickname: string;
     introduction: string;
+    profileImageUrl: string;
   };
   onSave?: (data: { nickname: string; introduction: string }) => void;
 }
@@ -40,8 +42,18 @@ export function ProfileForm({ initialData, onSave }: ProfileFormProps) {
 
   return (
     <div className="flex flex-col items-center gap-12 px-4">
-      {/* Profile Picture Placeholder */}
-      <div className="w-24 h-24 rounded-full bg-gray-200" />
+      {/* Profile Image */}
+      {initialData?.profileImageUrl ? (
+        <Image
+          src={initialData.profileImageUrl}
+          alt="프로필 이미지"
+          width={96}
+          height={96}
+          className="rounded-full object-cover"
+        />
+      ) : (
+        <div className="w-24 h-24 rounded-full bg-gray-200" />
+      )}
 
       {/* Form Container */}
       <div className="w-full max-w-md space-y-8">

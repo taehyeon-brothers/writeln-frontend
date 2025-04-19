@@ -48,6 +48,7 @@ export function ProfileContainer() {
       initialData={{
         nickname: profileData?.nickname || "",
         introduction: profileData?.introduction || "",
+        profileImageUrl: profileData?.profileImageUrl || "",
       }}
       onSave={handleSave}
     />
