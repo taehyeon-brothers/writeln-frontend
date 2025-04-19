@@ -63,5 +63,10 @@
     "typescript": "^5",
     "vitest": "^3.0.8",
     "wait-on": "^8.0.3"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
