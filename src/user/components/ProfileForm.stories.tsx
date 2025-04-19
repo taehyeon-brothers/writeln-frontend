@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { ProfileForm } from "./ProfileForm";
 import { expect, userEvent, within } from "@storybook/test";
 
+const PROFILE_IMAGE_URL =
+  "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=96&h=96&fit=crop&auto=format";
+
 const meta: Meta<typeof ProfileForm> = {
   title: "User/ProfileForm",
   component: ProfileForm,
@@ -31,7 +34,7 @@ export const WithInitialData: Story = {
       nickname: "홍길동",
       introduction:
         "안녕하세요. 저는 홍길동입니다. 하루를 마무리하면서 노을을 보는 것을 좋아합니다.",
-      profileImageUrl: "https://example.com/profile.jpg",
+      profileImageUrl: PROFILE_IMAGE_URL,
     },
   },
 };
@@ -42,7 +45,7 @@ export const WithLongText: Story = {
       nickname: "김철수",
       introduction:
         "안녕하세요. 저는 김철수입니다. 제 취미는 독서와 여행입니다. 특히 자연 속에서 시간을 보내는 것을 좋아합니다. 주말에는 가족과 함께 등산을 자주 다니고, 휴가 때는 해외여행을 즐깁니다. 최근에는 일본의 작은 마을들을 여행하며 현지 문화를 체험하는 것을 좋아합니다. 앞으로도 다양한 경험을 통해 삶을 풍요롭게 만들고 싶습니다.",
-      profileImageUrl: "https://example.com/profile.jpg",
+      profileImageUrl: PROFILE_IMAGE_URL,
     },
   },
 };
@@ -52,7 +55,7 @@ export const BasicInput: Story = {
     initialData: {
       nickname: "",
       introduction: "",
-      profileImageUrl: "https://example.com/profile.jpg",
+      profileImageUrl: PROFILE_IMAGE_URL,
     },
   },
   play: async ({ canvasElement, args }) => {
@@ -116,7 +119,7 @@ export const MaxLengthInput: Story = {
     initialData: {
       nickname: "",
       introduction: "",
-      profileImageUrl: "https://example.com/profile.jpg",
+      profileImageUrl: PROFILE_IMAGE_URL,
     },
   },
   play: async ({ canvasElement, args }) => {
