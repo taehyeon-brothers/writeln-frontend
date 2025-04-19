@@ -1,0 +1,53 @@
+import { Input } from "@/src/base/components/input";
+import { Label } from "@/src/base/components/label";
+import { Textarea } from "@/src/base/components/textarea";
+
+interface ProfileFormProps {
+  initialData?: {
+    nickname: string;
+    introduction: string;
+  };
+  onSave?: (data: { nickname: string; introduction: string }) => void;
+}
+
+export function ProfileForm({ initialData, onSave }: ProfileFormProps) {
+  return (
+    <div className="flex flex-col items-center gap-12 px-4">
+      {/* Profile Picture Placeholder */}
+      <div className="w-24 h-24 rounded-full bg-gray-200" />
+
+      {/* Form Container */}
+      <div className="w-full max-w-md space-y-8">
+        {/* Name Input */}
+        <div className="space-y-2">
+          <Label htmlFor="nickname">이름</Label>
+          <Input
+            id="nickname"
+            maxLength={20}
+            defaultValue={initialData?.nickname}
+            placeholder="이름을 입력해주세요"
+            className="w-full"
+          />
+          <div className="text-sm text-gray-500 text-right">
+            <span>0</span>/20
+          </div>
+        </div>
+
+        {/* Introduction Textarea */}
+        <div className="space-y-2">
+          <Label htmlFor="introduction">자기 소개</Label>
+          <Textarea
+            id="introduction"
+            maxLength={200}
+            defaultValue={initialData?.introduction}
+            placeholder="자기소개를 입력해주세요"
+            className="w-full min-h-[120px]"
+          />
+          <div className="text-sm text-gray-500 text-right">
+            <span>0</span>/200
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
