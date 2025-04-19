@@ -1,7 +1,8 @@
 import { Input } from "@/src/base/components/input";
 import { Label } from "@/src/base/components/label";
 import { Textarea } from "@/src/base/components/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDebounce } from "@/src/hooks/useDebounce";
 
 interface ProfileFormProps {
   initialData?: {
@@ -16,6 +17,14 @@ export function ProfileForm({ initialData, onSave }: ProfileFormProps) {
     nickname: initialData?.nickname || "",
     introduction: initialData?.introduction || "",
   });
+
+  const debouncedFormData = useDebounce(formData, 200);
+
+  useEffect(() => {
+    if (onSave) {
+      onSave(debouncedFormData);
+    }
+  }, [debouncedFormData, onSave]);
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
