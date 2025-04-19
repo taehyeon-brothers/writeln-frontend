@@ -1,6 +1,7 @@
-import { Input } from "@/src/base/components/input";
-import { Label } from "@/src/base/components/label";
-import { Textarea } from "@/src/base/components/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 
 interface ProfileFormProps {
   initialData?: {
@@ -11,6 +12,23 @@ interface ProfileFormProps {
 }
 
 export function ProfileForm({ initialData, onSave }: ProfileFormProps) {
+  const [formData, setFormData] = useState({
+    nickname: initialData?.nickname || "",
+    introduction: initialData?.introduction || "",
+  });
+
+  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, nickname: value }));
+  };
+
+  const handleIntroductionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, introduction: value }));
+  };
+
   return (
     <div className="flex flex-col items-center gap-12 px-4">
       {/* Profile Picture Placeholder */}
@@ -24,12 +42,13 @@ export function ProfileForm({ initialData, onSave }: ProfileFormProps) {
           <Input
             id="nickname"
             maxLength={20}
-            defaultValue={initialData?.nickname}
+            value={formData.nickname}
+            onChange={handleNicknameChange}
             placeholder="이름을 입력해주세요"
             className="w-full"
           />
           <div className="text-sm text-gray-500 text-right">
-            <span>0</span>/20
+            <span>{formData.nickname.length}</span>/20
           </div>
         </div>
 
@@ -39,12 +58,13 @@ export function ProfileForm({ initialData, onSave }: ProfileFormProps) {
           <Textarea
             id="introduction"
             maxLength={200}
-            defaultValue={initialData?.introduction}
+            value={formData.introduction}
+            onChange={handleIntroductionChange}
             placeholder="자기소개를 입력해주세요"
             className="w-full min-h-[120px]"
           />
           <div className="text-sm text-gray-500 text-right">
-            <span>0</span>/200
+            <span>{formData.introduction.length}</span>/200
           </div>
         </div>
       </div>
