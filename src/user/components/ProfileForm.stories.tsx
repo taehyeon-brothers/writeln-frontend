@@ -31,6 +31,7 @@ export const WithInitialData: Story = {
       nickname: "홍길동",
       introduction:
         "안녕하세요. 저는 홍길동입니다. 하루를 마무리하면서 노을을 보는 것을 좋아합니다.",
+      profileImageUrl: "https://example.com/profile.jpg",
     },
   },
 };
@@ -41,14 +42,28 @@ export const WithLongText: Story = {
       nickname: "김철수",
       introduction:
         "안녕하세요. 저는 김철수입니다. 제 취미는 독서와 여행입니다. 특히 자연 속에서 시간을 보내는 것을 좋아합니다. 주말에는 가족과 함께 등산을 자주 다니고, 휴가 때는 해외여행을 즐깁니다. 최근에는 일본의 작은 마을들을 여행하며 현지 문화를 체험하는 것을 좋아합니다. 앞으로도 다양한 경험을 통해 삶을 풍요롭게 만들고 싶습니다.",
+      profileImageUrl: "https://example.com/profile.jpg",
     },
   },
 };
 
 export const BasicInput: Story = {
-  args: {},
+  args: {
+    initialData: {
+      nickname: "",
+      introduction: "",
+      profileImageUrl: "https://example.com/profile.jpg",
+    },
+  },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
+
+    // 이미지 테스트
+    const profileImage = canvas.getByRole("img", { name: "프로필 이미지" });
+    expect(profileImage).toHaveAttribute(
+      "src",
+      args.initialData?.profileImageUrl
+    );
 
     // Test nickname input
     const nicknameInput = canvas.getByLabelText("이름");
@@ -79,8 +94,31 @@ export const BasicInput: Story = {
   },
 };
 
+export const WithoutImage: Story = {
+  args: {
+    initialData: {
+      nickname: "",
+      introduction: "",
+      profileImageUrl: "",
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // fallback div가 렌더링되는지 확인
+    const fallbackDiv = canvas.getByTestId("profile-fallback");
+    expect(fallbackDiv).toBeInTheDocument();
+  },
+};
+
 export const MaxLengthInput: Story = {
-  args: {},
+  args: {
+    initialData: {
+      nickname: "",
+      introduction: "",
+      profileImageUrl: "https://example.com/profile.jpg",
+    },
+  },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
 

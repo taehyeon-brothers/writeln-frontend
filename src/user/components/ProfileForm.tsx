@@ -52,7 +52,10 @@ export function ProfileForm({ initialData, onSave }: ProfileFormProps) {
           className="rounded-full object-cover"
         />
       ) : (
-        <div className="w-24 h-24 rounded-full bg-gray-200" />
+        <div
+          className="w-24 h-24 rounded-full bg-gray-200"
+          data-testid="profile-fallback"
+        />
       )}
 
       {/* Form Container */}
