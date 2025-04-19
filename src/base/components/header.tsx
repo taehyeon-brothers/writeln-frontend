@@ -15,22 +15,30 @@ export default function Header({
 }: HeaderProps) {
   return (
     <header className="sticky top-0 z-10 flex items-center justify-between bg-[#fef2f2] px-4 py-3">
-      <h1 className="text-3xl font-bold text-[#450c18]">
+      <h1 className="text-3xl font-bold text-red-950">
         {title}
-        <span className="text-[#450c18]">.</span>
+        <span className="text-red-950">.</span>
       </h1>
       <div className="flex items-center gap-4">
         <button
           aria-label="Notifications"
-          className="rounded-full p-1 text-[#450c18] hover:bg-[#450c18]/10"
-          onClick={onNotificationClick}
+          className="rounded-full p-1 text-red-950 hover:bg-red-950/10"
+          onClick={() => {
+            // TODO: Implement notification click handler
+            console.log("Notification clicked");
+            onNotificationClick?.();
+          }}
         >
           <Bell size={24} />
         </button>
         <button
           aria-label="Camera"
           className="rounded-full p-1 text-[#cc3249] hover:bg-[#cc3249]/10"
-          onClick={onCameraClick}
+          onClick={() => {
+            // TODO: Implement camera click handler
+            console.log("Camera clicked");
+            onCameraClick?.();
+          }}
         >
           <Camera size={24} />
         </button>
