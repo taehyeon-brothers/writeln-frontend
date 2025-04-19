@@ -55,6 +55,7 @@ export const Default: Story = {
   },
 };
 
+// TODO fix msw to pass this test
 export const Loading: Story = {
   parameters: {
     msw: {
@@ -74,6 +75,7 @@ export const Loading: Story = {
   },
 };
 
+// TODO fix msw to pass this test
 export const Error: Story = {
   parameters: {
     msw: {
