@@ -1,5 +1,6 @@
 import "@/src/base/util/globals.css";
 import { ProfileGuard } from "@/src/user/providers/profile-guard";
+import { Toaster } from "sonner";
 
 export default function RootLayout({
   children,
@@ -8,8 +9,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={inter.className}>
         <ProfileGuard>{children}</ProfileGuard>
+        <Toaster />
       </body>
     </html>
   );
