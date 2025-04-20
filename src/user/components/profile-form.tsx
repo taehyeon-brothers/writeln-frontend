@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "@/src/base/components/input";
 import { Label } from "@/src/base/components/label";
 import { Textarea } from "@/src/base/components/textarea";
