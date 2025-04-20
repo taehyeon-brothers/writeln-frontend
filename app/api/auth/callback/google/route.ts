@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Use getCurrentUserProfile with access token
-    const userProfile = await getCurrentUserProfile(accessToken);
+    const userProfile = await getCurrentUserProfile();
 
     if (!checkProfileCompletion(userProfile)) {
       return NextResponse.redirect(new URL("/profile/edit", request.url));
