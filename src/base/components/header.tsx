@@ -3,6 +3,8 @@
 import { Bell, Camera } from "lucide-react";
 import { useState } from "react";
 import { CameraPage } from "../pages/camera-page";
+import { toast } from "sonner";
+import { uploadDailyPhoto } from "../actions";
 
 export interface HeaderProps {
   title?: string;
@@ -23,10 +25,24 @@ export default function Header({
     setShowCamera(false);
   };
 
-  const handlePhotoCapture = (file: File) => {
-    // TODO: 여기에서 촬영된 사진을 처리합니다
-    console.log("Photo captured:", file);
-    setShowCamera(false);
+  const handlePhotoCapture = async (file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const result = await uploadDailyPhoto(formData);
+      console.log("5. 업로드 결과:", result);
+
+      if (result.success) {
+        toast.success("사진이 업로드되었습니다.");
+        setShowCamera(false);
+      } else {
+        toast.error(result.error || "사진 업로드에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Failed to upload photo:", error);
+      toast.error("사진 업로드에 실패했습니다.");
+    }
   };
 
   return (
@@ -41,8 +57,6 @@ export default function Header({
             aria-label="Notifications"
             className="rounded-full p-1 text-red-950 hover:bg-red-950/10"
             onClick={() => {
-              // TODO: Implement notification click handler
-              console.log("Notification clicked");
               onNotificationClick?.();
             }}
           >
