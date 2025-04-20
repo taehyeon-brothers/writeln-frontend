@@ -4,6 +4,8 @@ import type {
   TagAddRequest,
   AddTagResponse,
   TagRemoveRequest,
+  DailyDetailResponse,
+  FeedDailyResponses,
 } from "./types";
 
 /**
@@ -25,10 +27,19 @@ export async function uploadDaily(file: File): Promise<DailyUploadResponse> {
 /**
  * Get a specific daily content by ID
  * @param dailyId - The ID of the daily to retrieve
- * @returns Promise with the daily content as a Blob
+ * @returns Promise with the daily details including tags and user information
  */
-export async function getDaily(dailyId: number): Promise<Blob> {
-  return await client.get(`daily/${dailyId}`).blob();
+export async function getDaily(dailyId: number): Promise<DailyDetailResponse> {
+  return await client.get(`daily/${dailyId}`).json<DailyDetailResponse>();
+}
+
+/**
+ * Get a daily image by ID
+ * @param dailyId - The ID of the daily to retrieve the image for
+ * @returns Promise with the image data as a Blob
+ */
+export async function getDailyImage(dailyId: number): Promise<Blob> {
+  return await client.get(`daily/${dailyId}/image`).blob();
 }
 
 /**
@@ -65,4 +76,23 @@ export async function removeTagFromDaily(
   await client.delete(`daily/${dailyId}/tag`, {
     json: data,
   });
+}
+
+interface GetAllDailiesParams {
+  page: number;
+  size: number;
+}
+
+/**
+ * Get all dailies with pagination
+ * @param params - Pagination parameters (page number and size)
+ * @returns Promise with paginated daily feed responses
+ */
+export async function getAllDailies({
+  page,
+  size,
+}: GetAllDailiesParams): Promise<FeedDailyResponses> {
+  return await client
+    .get(`daily/all?page=${page}&size=${size}`)
+    .json<FeedDailyResponses>();
 }

@@ -11,6 +11,11 @@ export interface AddTagResponse {
   tagName: string;
 }
 
+export interface TagDetailResponse {
+  tagId: number;
+  tagName: string;
+}
+
 export interface TagRemoveRequest {
   tagId: number;
 }
@@ -27,4 +32,23 @@ export interface FieldError {
   field: string;
   value?: unknown;
   reason: string;
+}
+
+export interface DailyDetailResponse {
+  dailyId: number;
+  userId: number;
+  userNickname: string;
+  tags: TagDetailResponse[];
+}
+
+export interface FeedDailyResponse {
+  dailyId: number;
+  userId: number;
+  userNickname: string;
+}
+
+export interface FeedDailyResponses {
+  currentPage: number;
+  isEnd: boolean;
+  dailies: FeedDailyResponse[];
 }
