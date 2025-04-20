@@ -27,8 +27,8 @@
           "required": true
         },
         "responses": {
-          "5xx": {
-            "description": "서버 내부 오류",
+          "4xx or 5xx": {
+            "description": "외부 API 관련 예외 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -47,8 +47,8 @@
               }
             }
           },
-          "4xx or 5xx": {
-            "description": "데이터베이스 관련 예외 발생",
+          "5xx": {
+            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -85,8 +85,8 @@
           "required": true
         },
         "responses": {
-          "5xx": {
-            "description": "서버 내부 오류",
+          "4xx or 5xx": {
+            "description": "외부 API 관련 예외 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -105,8 +105,8 @@
               }
             }
           },
-          "4xx or 5xx": {
-            "description": "데이터베이스 관련 예외 발생",
+          "5xx": {
+            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -149,8 +149,8 @@
           }
         },
         "responses": {
-          "5xx": {
-            "description": "서버 내부 오류",
+          "4xx or 5xx": {
+            "description": "외부 API 관련 예외 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -169,8 +169,8 @@
               }
             }
           },
-          "4xx or 5xx": {
-            "description": "데이터베이스 관련 예외 발생",
+          "5xx": {
+            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -223,8 +223,8 @@
           "required": true
         },
         "responses": {
-          "5xx": {
-            "description": "서버 내부 오류",
+          "4xx or 5xx": {
+            "description": "외부 API 관련 예외 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -243,8 +243,8 @@
               }
             }
           },
-          "4xx or 5xx": {
-            "description": "데이터베이스 관련 예외 발생",
+          "5xx": {
+            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -258,7 +258,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/AddTagResponse"
+                  "$ref": "#/components/schemas/TagDetailResponse"
                 }
               }
             }
@@ -286,8 +286,8 @@
           "required": true
         },
         "responses": {
-          "5xx": {
-            "description": "서버 내부 오류",
+          "4xx or 5xx": {
+            "description": "외부 API 관련 예외 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -306,8 +306,8 @@
               }
             }
           },
-          "4xx or 5xx": {
-            "description": "데이터베이스 관련 예외 발생",
+          "5xx": {
+            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -350,8 +350,8 @@
           }
         ],
         "responses": {
-          "5xx": {
-            "description": "서버 내부 오류",
+          "4xx or 5xx": {
+            "description": "외부 API 관련 예외 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -370,8 +370,8 @@
               }
             }
           },
-          "4xx or 5xx": {
-            "description": "데이터베이스 관련 예외 발생",
+          "5xx": {
+            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -403,8 +403,8 @@
         "tags": ["user-controller"],
         "operationId": "getProfile",
         "responses": {
-          "5xx": {
-            "description": "서버 내부 오류",
+          "4xx or 5xx": {
+            "description": "외부 API 관련 예외 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -423,8 +423,8 @@
               }
             }
           },
-          "4xx or 5xx": {
-            "description": "데이터베이스 관련 예외 발생",
+          "5xx": {
+            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -467,8 +467,8 @@
           }
         ],
         "responses": {
-          "5xx": {
-            "description": "서버 내부 오류",
+          "4xx or 5xx": {
+            "description": "외부 API 관련 예외 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -487,8 +487,72 @@
               }
             }
           },
+          "5xx": {
+            "description": "서버 내부 오류",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyDetailResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/v1/daily/{dailyId}/image": {
+      "get": {
+        "tags": ["daily-controller"],
+        "operationId": "getDailyImage",
+        "parameters": [
+          {
+            "name": "dailyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
           "4xx or 5xx": {
-            "description": "데이터베이스 관련 예외 발생",
+            "description": "외부 API 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "4xx": {
+            "description": "네트워크 관련 예외 발생",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "5xx": {
+            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -541,8 +605,8 @@
           }
         ],
         "responses": {
-          "5xx": {
-            "description": "서버 내부 오류",
+          "4xx or 5xx": {
+            "description": "외부 API 관련 예외 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -561,8 +625,8 @@
               }
             }
           },
-          "4xx or 5xx": {
-            "description": "데이터베이스 관련 예외 발생",
+          "5xx": {
+            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -595,8 +659,8 @@
         "summary": "서버 상태 확인",
         "operationId": "checkHealth",
         "responses": {
-          "5xx": {
-            "description": "서버 내부 오류",
+          "4xx or 5xx": {
+            "description": "외부 API 관련 예외 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -615,8 +679,8 @@
               }
             }
           },
-          "4xx or 5xx": {
-            "description": "데이터베이스 관련 예외 발생",
+          "5xx": {
+            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -643,8 +707,8 @@
         "tags": ["auth-controller"],
         "operationId": "logout",
         "responses": {
-          "5xx": {
-            "description": "서버 내부 오류",
+          "4xx or 5xx": {
+            "description": "외부 API 관련 예외 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -663,8 +727,8 @@
               }
             }
           },
-          "4xx or 5xx": {
-            "description": "데이터베이스 관련 예외 발생",
+          "5xx": {
+            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -717,8 +781,8 @@
           "required": true
         },
         "responses": {
-          "5xx": {
-            "description": "서버 내부 오류",
+          "4xx or 5xx": {
+            "description": "외부 API 관련 예외 발생",
             "content": {
               "*/*": {
                 "schema": {
@@ -737,8 +801,8 @@
               }
             }
           },
-          "4xx or 5xx": {
-            "description": "데이터베이스 관련 예외 발생",
+          "5xx": {
+            "description": "서버 내부 오류",
             "content": {
               "*/*": {
                 "schema": {
@@ -870,7 +934,7 @@
           }
         }
       },
-      "AddTagResponse": {
+      "TagDetailResponse": {
         "required": ["tagId", "tagName"],
         "type": "object",
         "properties": {
@@ -946,17 +1010,36 @@
           }
         }
       },
-      "FeedDailyResponse": {
-        "required": ["dailyId", "dailyImage", "userId", "userNickname"],
+      "DailyDetailResponse": {
+        "required": ["dailyId", "tags", "userId", "userNickname"],
         "type": "object",
         "properties": {
           "dailyId": {
             "type": "integer",
             "format": "int64"
           },
-          "dailyImage": {
-            "type": "string",
-            "format": "binary"
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userNickname": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagDetailResponse"
+            }
+          }
+        }
+      },
+      "FeedDailyResponse": {
+        "required": ["dailyId", "userId", "userNickname"],
+        "type": "object",
+        "properties": {
+          "dailyId": {
+            "type": "integer",
+            "format": "int64"
           },
           "userId": {
             "type": "integer",
