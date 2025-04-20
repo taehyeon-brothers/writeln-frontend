@@ -2,6 +2,8 @@ import "@/src/base/util/globals.css";
 import { ProfileGuard } from "@/src/user/providers/profile-guard";
 import { Toaster } from "sonner";
 
+export const runtime = "edge";
+
 export default function RootLayout({
   children,
 }: {
