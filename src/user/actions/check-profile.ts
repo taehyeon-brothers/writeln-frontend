@@ -4,7 +4,7 @@ import { getCurrentUserProfile } from "../apis";
 import { checkProfileCompletion } from "../helpers/profile";
 import { redirect } from "next/navigation";
 
-const PUBLIC_PATHS = ["/sign-in", "/profile/edit"];
+const PUBLIC_PATHS = ["/sign-in", "/profile/edit", "/profile/create"];
 
 export type ProfileCheckResult = {
   isComplete: boolean;
@@ -24,7 +24,7 @@ export async function checkUserProfile(
     const isComplete = checkProfileCompletion(profile);
 
     if (!isComplete) {
-      redirect("/profile/edit");
+      redirect("/profile/create");
     }
 
     return { isComplete: true };
