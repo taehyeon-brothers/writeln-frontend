@@ -92,10 +92,10 @@ export default function ProfileCreatePage() {
           // TODO: Implement notification click handler
           console.log("Notification clicked");
         }}
-        onCameraClick={() => {
-          // TODO: Implement camera click handler
-          console.log("Camera clicked");
-        }}
+        // onCameraClick={() => {
+        //   // TODO: Implement camera click handler
+        //   console.log("Camera clicked");
+        // }}
       />
 
       <div className="flex-1 px-4 py-4">

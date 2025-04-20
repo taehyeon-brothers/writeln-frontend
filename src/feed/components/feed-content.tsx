@@ -79,10 +79,10 @@ export default function FeedContent({
           // TODO: Implement notification click handler
           console.log("Notification clicked");
         }}
-        onCameraClick={() => {
-          // TODO: Implement camera click handler
-          console.log("Camera clicked");
-        }}
+        // onCameraClick={() => {
+        // TODO: Implement camera click handler
+        // console.log("Camera clicked");
+        // }}
       />
 
       {/* Feed */}
