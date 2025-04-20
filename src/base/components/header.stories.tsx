@@ -15,10 +15,10 @@ const meta: Meta<typeof Header> = {
       action: "notification clicked",
       description: "Callback when notification button is clicked",
     },
-    onCameraClick: {
-      action: "camera clicked",
-      description: "Callback when camera button is clicked",
-    },
+    // onCameraClick: {
+    //   action: "camera clicked",
+    //   description: "Callback when camera button is clicked",
+    // },
   },
 };
 
