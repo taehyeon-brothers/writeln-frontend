@@ -2,3 +2,22 @@ name = "matchreal-frontend"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
+
+[vars]
+NEXT_PUBLIC_API_URL = "https://api.matchreal.shop/api/v1"
+NEXT_PUBLIC_GOOGLE_CLIENT_ID = "350689297829-8j73pgdgktj77v0en7g1sl1c6o1rodhm.apps.googleusercontent.com"
+NEXT_PUBLIC_GOOGLE_OAUTH_URI = "https://accounts.google.com/o/oauth2/v2/auth"
+
+# Environment-specific variables
+[env.production]
+vars = { NEXT_PUBLIC_URL = "https://matchreal.pages.dev" }
+
+[env.preview]
+vars = { NEXT_PUBLIC_URL = "https://$CF_PAGES_URL" }
+
+[env.development]
+vars = { NEXT_PUBLIC_URL = "http://localhost:3000" }
+
+# Secrets should be added via the Cloudflare dashboard or wrangler cli:
+# wrangler secret put GOOGLE_CLIENT_SECRET
+# wrangler secret put GOOGLE_CLIENT_ID
