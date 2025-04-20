@@ -3,10 +3,11 @@ import type { UpdateUserRequest, UserResponse } from "./types";
 
 /**
  * Get the current user's profile
+ * @param accessToken - Optional access token to use instead of cookies
  * @returns Promise with the user profile
  */
 export async function getCurrentUserProfile(): Promise<UserResponse> {
-  return await client.get("api/v1/users").json<UserResponse>();
+  return await client.get("users/me").json<UserResponse>();
 }
 
 /**
@@ -17,9 +18,7 @@ export async function getCurrentUserProfile(): Promise<UserResponse> {
 export async function updateUserProfile(
   data: UpdateUserRequest
 ): Promise<UserResponse> {
-  return await client
-    .patch("api/v1/users", { json: data })
-    .json<UserResponse>();
+  return await client.patch("users", { json: data }).json<UserResponse>();
 }
 
 /**
@@ -30,5 +29,5 @@ export async function updateUserProfile(
 export async function getUserProfileById(
   userId: number
 ): Promise<UserResponse> {
-  return await client.get(`api/v1/users/${userId}`).json<UserResponse>();
+  return await client.get(`users/${userId}`).json<UserResponse>();
 }

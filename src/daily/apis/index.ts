@@ -16,7 +16,7 @@ export async function uploadDaily(file: File): Promise<DailyUploadResponse> {
   formData.append("file", file);
 
   return await client
-    .post("api/v1/daily", {
+    .post("daily", {
       body: formData,
     })
     .json<DailyUploadResponse>();
@@ -28,7 +28,7 @@ export async function uploadDaily(file: File): Promise<DailyUploadResponse> {
  * @returns Promise with the daily content as a Blob
  */
 export async function getDaily(dailyId: number): Promise<Blob> {
-  return await client.get(`api/v1/daily/${dailyId}`).blob();
+  return await client.get(`daily/${dailyId}`).blob();
 }
 
 /**
@@ -44,7 +44,7 @@ export async function addTagToDaily(
   const data: TagAddRequest = { tagName };
 
   return await client
-    .post(`api/v1/daily/${dailyId}/tag`, {
+    .post(`daily/${dailyId}/tag`, {
       json: data,
     })
     .json<AddTagResponse>();
@@ -62,7 +62,7 @@ export async function removeTagFromDaily(
 ): Promise<void> {
   const data: TagRemoveRequest = { tagId };
 
-  await client.delete(`api/v1/daily/${dailyId}/tag`, {
+  await client.delete(`daily/${dailyId}/tag`, {
     json: data,
   });
 }

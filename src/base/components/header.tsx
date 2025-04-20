@@ -1,0 +1,48 @@
+"use client";
+
+import { Bell, Camera } from "lucide-react";
+
+export interface HeaderProps {
+  title?: string;
+  onNotificationClick?: () => void;
+  onCameraClick?: () => void;
+}
+
+export default function Header({
+  title = "MatchReal",
+  onNotificationClick,
+  onCameraClick,
+}: HeaderProps) {
+  return (
+    <header className="sticky top-0 z-10 flex items-center justify-between bg-[#fef2f2] px-4 py-3">
+      <h1 className="text-3xl font-bold text-red-950">
+        {title}
+        <span className="text-red-950">.</span>
+      </h1>
+      <div className="flex items-center gap-4">
+        <button
+          aria-label="Notifications"
+          className="rounded-full p-1 text-red-950 hover:bg-red-950/10"
+          onClick={() => {
+            // TODO: Implement notification click handler
+            console.log("Notification clicked");
+            onNotificationClick?.();
+          }}
+        >
+          <Bell size={24} />
+        </button>
+        <button
+          aria-label="Camera"
+          className="rounded-full p-1 text-[#cc3249] hover:bg-[#cc3249]/10"
+          onClick={() => {
+            // TODO: Implement camera click handler
+            console.log("Camera clicked");
+            onCameraClick?.();
+          }}
+        >
+          <Camera size={24} />
+        </button>
+      </div>
+    </header>
+  );
+}

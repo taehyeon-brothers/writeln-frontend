@@ -1,4 +1,5 @@
 import "@/src/base/util/globals.css";
+import { ProfileGuard } from "@/src/user/providers/profile-guard";
 
 export default function RootLayout({
   children,
@@ -7,7 +8,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ProfileGuard>{children}</ProfileGuard>
+      </body>
     </html>
   );
 }
