@@ -3,8 +3,9 @@
 import { getCurrentUserProfile } from "../apis";
 import { checkProfileCompletion } from "../helpers/profile";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-const PUBLIC_PATHS = ["/sign-in", "/profile/edit", "/profile/create"];
+const PUBLIC_PATHS = ["/sign-in", "/profile/edit"];
 
 export type ProfileCheckResult = {
   isComplete: boolean;
@@ -17,6 +18,15 @@ export async function checkUserProfile(
   // Skip check for public routes
   if (PUBLIC_PATHS.includes(currentPath)) {
     return { isComplete: true };
+  }
+
+  // TODO: separate check for login status and profile completion
+  // Check login status
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get("accessToken");
+
+  if (!accessToken) {
+    redirect("/sign-in");
   }
 
   try {
