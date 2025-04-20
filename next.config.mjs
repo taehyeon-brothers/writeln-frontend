@@ -13,9 +13,6 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    runtime: "edge",
-  },
 };
 
 if (process.env.NODE_ENV === "development") {
