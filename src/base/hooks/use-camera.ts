@@ -63,10 +63,6 @@ export function useCamera() {
         stream,
         error: null,
       }));
-
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
     } catch (error) {
       if (error instanceof Error) {
         if (error.name === "NotAllowedError") {
@@ -140,6 +136,7 @@ export function useCamera() {
     setState((prev) => ({ ...prev, photoData: null }));
   }, []);
 
+  // Cleanup effect
   useEffect(() => {
     return () => {
       if (state.stream) {
@@ -147,6 +144,13 @@ export function useCamera() {
       }
     };
   }, [state.stream]);
+
+  // Stream connection effect
+  useEffect(() => {
+    if (videoRef.current && state.stream && state.status === "ready") {
+      videoRef.current.srcObject = state.stream;
+    }
+  }, [state.stream, state.status]);
 
   return {
     state,
