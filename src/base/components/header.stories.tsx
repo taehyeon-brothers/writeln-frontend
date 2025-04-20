@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { expect, userEvent, within } from "@storybook/test";
-import Header, { HeaderProps } from "./header";
+import { expect, within } from "@storybook/test";
+import Header from "./header";
 
 const meta: Meta<typeof Header> = {
   title: "Base/Header",
