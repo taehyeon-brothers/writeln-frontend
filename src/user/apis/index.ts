@@ -6,23 +6,8 @@ import type { UpdateUserRequest, UserResponse } from "./types";
  * @param accessToken - Optional access token to use instead of cookies
  * @returns Promise with the user profile
  */
-export async function getCurrentUserProfile(
-  accessToken?: string
-): Promise<UserResponse> {
-  return await client
-    .get("users/me", {
-      hooks: accessToken
-        ? {
-            beforeRequest: [
-              (request) => {
-                request.headers.set("Authorization", `Bearer ${accessToken}`);
-                return request;
-              },
-            ],
-          }
-        : undefined,
-    })
-    .json<UserResponse>();
+export async function getCurrentUserProfile(): Promise<UserResponse> {
+  return await client.get("users/me").json<UserResponse>();
 }
 
 /**
