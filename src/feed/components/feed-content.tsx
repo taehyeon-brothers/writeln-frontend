@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useIntersection } from "react-use";
 import {
   Avatar,
   AvatarFallback,
@@ -16,18 +17,55 @@ import type { FeedState } from "@/src/daily/types/feed";
 export default function FeedContent() {
   const [feedState, setFeedState] = useState<FeedState>({
     dailies: [],
-    currentPage: 0,
+    currentPage: 1,
     isEnd: false,
-    isLoading: true,
+    isLoading: false,
   });
+
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const [activeTab, setActiveTab] = useState<"home" | "messages" | "profile">(
     "home"
   );
 
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const intersection = useIntersection(loadMoreRef, {
+    root: null,
+    rootMargin: "100px",
+    threshold: 0,
+  });
+
+  const loadMore = useCallback(async () => {
+    if (feedState.isEnd || isLoadingMore) return;
+
+    const nextPage = feedState.currentPage + 1;
+    setIsLoadingMore(true);
+
+    try {
+      const data = await getFeedData(nextPage);
+      setFeedState((prev) => ({
+        dailies: [...prev.dailies, ...data.dailies],
+        currentPage: data.currentPage,
+        isEnd: data.isEnd,
+        isLoading: false,
+      }));
+    } catch (error) {
+      console.error("Failed to load more data:", error);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [feedState.currentPage, feedState.isEnd, isLoadingMore]);
+
+  useEffect(() => {
+    if (intersection?.isIntersecting) {
+      loadMore();
+    }
+  }, [intersection?.isIntersecting, loadMore]);
+
   const loadInitialData = useCallback(async () => {
     try {
-      const data = await getFeedData(0);
+      const data = await getFeedData(1);
       setFeedState((prev) => ({
         ...prev,
         ...data,
@@ -35,10 +73,8 @@ export default function FeedContent() {
       }));
     } catch (error) {
       console.error("Failed to load feed data:", error);
-      setFeedState((prev) => ({
-        ...prev,
-        isLoading: false,
-      }));
+    } finally {
+      setIsInitialLoading(false);
     }
   }, []);
 
@@ -46,18 +82,15 @@ export default function FeedContent() {
     loadInitialData();
   }, [loadInitialData]);
 
-  return (
-    <main className="flex min-h-screen flex-col bg-[#fef2f2]">
-      <Header
-        onNotificationClick={() => {
-          console.log("Notification clicked");
-        }}
-      />
-
-      {/* Feed */}
-      <div className="flex-1 px-4 py-2">
-        {feedState.isLoading ? (
-          // Loading skeleton
+  if (isInitialLoading) {
+    return (
+      <main className="flex min-h-screen flex-col bg-[#fef2f2]">
+        <Header
+          onNotificationClick={() => {
+            console.log("Notification clicked");
+          }}
+        />
+        <div className="flex-1 px-4 py-2 overflow-auto">
           <div className="space-y-4">
             {[1, 2].map((key) => (
               <Card
@@ -75,60 +108,78 @@ export default function FeedContent() {
               </Card>
             ))}
           </div>
-        ) : (
-          <ul className="space-y-4">
-            {feedState.dailies.map((daily) => (
-              <li key={daily.dailyId}>
-                <Card className="overflow-hidden rounded-3xl bg-white p-0 shadow-sm">
-                  <div className="flex items-center gap-3 p-4">
-                    <Avatar className="h-10 w-10 border border-[#d9d9d9]">
-                      <AvatarImage
-                        src="/placeholder.svg?height=40&width=40"
-                        alt={daily.userNickname}
-                      />
-                      <AvatarFallback>{daily.userNickname[0]}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h2 className="font-semibold text-[#450c18]">
-                        {daily.userNickname}
-                      </h2>
-                      <p className="text-sm text-[#888888]">방금 전</p>
-                    </div>
+        </div>
+        <Footer activeTab={activeTab} onTabChange={setActiveTab} />
+      </main>
+    );
+  }
+
+  return (
+    <main className="flex min-h-screen flex-col bg-[#fef2f2]">
+      <Header
+        onNotificationClick={() => {
+          console.log("Notification clicked");
+        }}
+      />
+
+      <div className="flex-1 px-4 py-2 overflow-auto">
+        <ul className="space-y-4">
+          {feedState.dailies.map((daily) => (
+            <li key={daily.dailyId}>
+              <Card className="overflow-hidden rounded-3xl bg-white p-0 shadow-sm">
+                <div className="flex items-center gap-3 p-4">
+                  <Avatar className="h-10 w-10 border border-[#d9d9d9]">
+                    <AvatarImage
+                      src="/placeholder.svg?height=40&width=40"
+                      alt={daily.userNickname}
+                    />
+                    <AvatarFallback>{daily.userNickname[0]}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h2 className="font-semibold text-[#450c18]">
+                      {daily.userNickname}
+                    </h2>
+                    <p className="text-sm text-[#888888]">방금 전</p>
                   </div>
-                  <div className="relative">
-                    <div className="aspect-[4/3] w-full">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={daily.imageUrl}
-                        alt="Daily content"
-                        className="h-full w-full object-cover"
-                        onError={(e) => {
-                          e.currentTarget.src = "/placeholder.svg";
-                        }}
-                      />
-                    </div>
-                    {/* Tags */}
-                    {daily.tags.length > 0 && (
-                      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
-                        <div className="flex flex-wrap gap-2">
-                          {daily.tags.map((tag) => (
-                            <Badge
-                              key={tag.tagId}
-                              variant="secondary"
-                              className="bg-white/80 text-[#450c18] hover:bg-white"
-                            >
-                              {tag.tagName}
-                            </Badge>
-                          ))}
-                        </div>
+                </div>
+                <div className="relative">
+                  <div className="aspect-[4/3] w-full">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={daily.imageUrl}
+                      alt="Daily content"
+                      className="h-full w-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = "/placeholder.svg";
+                      }}
+                    />
+                  </div>
+                  {/* Tags */}
+                  {daily.tags.length > 0 && (
+                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
+                      <div className="flex flex-wrap gap-2">
+                        {daily.tags.map((tag) => (
+                          <Badge
+                            key={tag.tagId}
+                            variant="secondary"
+                            className="bg-white/80 text-[#450c18] hover:bg-white"
+                          >
+                            {tag.tagName}
+                          </Badge>
+                        ))}
                       </div>
-                    )}
-                  </div>
-                </Card>
-              </li>
-            ))}
-          </ul>
-        )}
+                    </div>
+                  )}
+                </div>
+              </Card>
+            </li>
+          ))}
+        </ul>
+        <div ref={loadMoreRef} className="py-4 text-center">
+          {isLoadingMore && (
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#cc3249] mx-auto" />
+          )}
+        </div>
       </div>
 
       <Footer activeTab={activeTab} onTabChange={setActiveTab} />
