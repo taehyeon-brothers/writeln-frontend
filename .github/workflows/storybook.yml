@@ -18,13 +18,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.11.0
-          cache: "yarn"
+          cache: "pnpm"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup pnpm
+        run: corepack prepare pnpm@8.15.5 --activate
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Run Storybook tests
-        run: yarn test-storybook:ci
+        run: pnpm test-storybook:ci
