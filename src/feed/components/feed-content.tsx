@@ -1,153 +1,134 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@/src/base/components/avatar";
 import { Card } from "@/src/base/components/card";
+import { Badge } from "@/src/base/components/badge";
 import Header from "@/src/base/components/header";
 import Footer from "@/src/base/components/footer";
+import { getFeedData } from "@/app/actions/daily";
+import type { FeedState } from "@/src/daily/types/feed";
 
-type Post = {
-  id: string;
-  user: {
-    name: string;
-    avatar: string;
-    initials: string;
-  };
-  timeAgo: string;
-  imageUrl: string;
-  locked: boolean;
-};
-
-export type FeedState = {
-  status: "loading" | "error" | "success";
-  error: string | null;
-  posts: Post[];
-};
-
-interface FeedContentProps {
-  setFeedStateForStory?: (state: FeedState) => void;
-  initialState?: "loading" | "error" | "success" | "empty";
-  isStorybook?: boolean;
-}
-
-export default function FeedContent({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setFeedStateForStory: _setFeedStateForStory,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  initialState: _initialState,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  isStorybook: _isStorybook,
-}: FeedContentProps = {}) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [posts, setPosts] = useState<Post[]>([
-    {
-      id: "1",
-      user: {
-        name: "Emma Boisson",
-        avatar: "/placeholder.svg?height=40&width=40",
-        initials: "EB",
-      },
-      timeAgo: "10분 전",
-      imageUrl: "/placeholder.svg?height=400&width=600",
-      locked: true,
-    },
-    {
-      id: "2",
-      user: {
-        name: "Amanda",
-        avatar: "/placeholder.svg?height=40&width=40",
-        initials: "A",
-      },
-      timeAgo: "15분 전",
-      imageUrl: "/placeholder.svg?height=400&width=600",
-      locked: true,
-    },
-  ]);
+export default function FeedContent() {
+  const [feedState, setFeedState] = useState<FeedState>({
+    dailies: [],
+    currentPage: 0,
+    isEnd: false,
+    isLoading: true,
+  });
 
   const [activeTab, setActiveTab] = useState<"home" | "messages" | "profile">(
     "home"
   );
 
+  const loadInitialData = useCallback(async () => {
+    try {
+      const data = await getFeedData(0);
+      setFeedState((prev) => ({
+        ...prev,
+        ...data,
+        isLoading: false,
+      }));
+    } catch (error) {
+      console.error("Failed to load feed data:", error);
+      setFeedState((prev) => ({
+        ...prev,
+        isLoading: false,
+      }));
+    }
+  }, []);
+
+  useEffect(() => {
+    loadInitialData();
+  }, [loadInitialData]);
+
   return (
     <main className="flex min-h-screen flex-col bg-[#fef2f2]">
       <Header
         onNotificationClick={() => {
-          // TODO: Implement notification click handler
           console.log("Notification clicked");
         }}
-        // onCameraClick={() => {
-        // TODO: Implement camera click handler
-        // console.log("Camera clicked");
-        // }}
       />
 
       {/* Feed */}
       <div className="flex-1 px-4 py-2">
-        <ul className="space-y-4">
-          {posts.map((post) => (
-            <li key={post.id}>
-              <Card className="overflow-hidden rounded-3xl bg-white p-0 shadow-sm">
+        {feedState.isLoading ? (
+          // Loading skeleton
+          <div className="space-y-4">
+            {[1, 2].map((key) => (
+              <Card
+                key={key}
+                className="overflow-hidden rounded-3xl bg-white p-0 shadow-sm animate-pulse"
+              >
                 <div className="flex items-center gap-3 p-4">
-                  <Avatar className="h-10 w-10 border border-[#d9d9d9]">
-                    <AvatarImage src={post.user.avatar} alt={post.user.name} />
-                    <AvatarFallback>{post.user.initials}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h2 className="font-semibold text-[#450c18]">
-                      {post.user.name}
-                    </h2>
-                    <p className="text-sm text-[#888888]">{post.timeAgo}</p>
+                  <div className="h-10 w-10 rounded-full bg-gray-200" />
+                  <div className="space-y-2">
+                    <div className="h-4 w-24 bg-gray-200 rounded" />
+                    <div className="h-3 w-16 bg-gray-200 rounded" />
                   </div>
                 </div>
-                <div className="relative">
-                  <div className="aspect-[4/3] w-full bg-gradient-to-br from-blue-200 to-purple-200 blur-sm">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={post.imageUrl || "/placeholder.svg"}
-                      alt="Post content"
-                      className="h-full w-full object-cover opacity-0"
-                    />
-                  </div>
-                  {post.locked && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 text-white">
-                      <div className="mb-2 rounded-full bg-white/20 p-3">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="h-6 w-6"
-                        >
-                          <rect
-                            width="18"
-                            height="11"
-                            x="3"
-                            y="11"
-                            rx="2"
-                            ry="2"
-                          />
-                          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                        </svg>
-                      </div>
-                      <p className="text-center text-lg font-medium">
-                        사진을 업로드하고 확인해보세요.
-                      </p>
-                    </div>
-                  )}
-                </div>
+                <div className="aspect-[4/3] w-full bg-gray-200" />
               </Card>
-            </li>
-          ))}
-        </ul>
+            ))}
+          </div>
+        ) : (
+          <ul className="space-y-4">
+            {feedState.dailies.map((daily) => (
+              <li key={daily.dailyId}>
+                <Card className="overflow-hidden rounded-3xl bg-white p-0 shadow-sm">
+                  <div className="flex items-center gap-3 p-4">
+                    <Avatar className="h-10 w-10 border border-[#d9d9d9]">
+                      <AvatarImage
+                        src="/placeholder.svg?height=40&width=40"
+                        alt={daily.userNickname}
+                      />
+                      <AvatarFallback>{daily.userNickname[0]}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h2 className="font-semibold text-[#450c18]">
+                        {daily.userNickname}
+                      </h2>
+                      <p className="text-sm text-[#888888]">방금 전</p>
+                    </div>
+                  </div>
+                  <div className="relative">
+                    <div className="aspect-[4/3] w-full">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={daily.imageUrl}
+                        alt="Daily content"
+                        className="h-full w-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = "/placeholder.svg";
+                        }}
+                      />
+                    </div>
+                    {/* Tags */}
+                    {daily.tags.length > 0 && (
+                      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
+                        <div className="flex flex-wrap gap-2">
+                          {daily.tags.map((tag) => (
+                            <Badge
+                              key={tag.tagId}
+                              variant="secondary"
+                              className="bg-white/80 text-[#450c18] hover:bg-white"
+                            >
+                              {tag.tagName}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <Footer activeTab={activeTab} onTabChange={setActiveTab} />
