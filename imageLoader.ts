@@ -11,6 +11,11 @@ export default function cloudflareLoader({
   width: number;
   quality?: number;
 }) {
+  // If it's an external URL (starts with http or https), return it directly
+  if (src.startsWith("http://") || src.startsWith("https://")) {
+    return src;
+  }
+
   if (process.env.NODE_ENV === "development") {
     return src;
   }
