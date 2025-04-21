@@ -23,8 +23,10 @@ export async function getFeedData(page: number): Promise<{
             getDailyImage(daily.dailyId),
           ]);
 
-          // Convert Blob to object URL
-          const imageUrl = URL.createObjectURL(imageBlob);
+          // Convert Blob to base64
+          const arrayBuffer = await imageBlob.arrayBuffer();
+          const base64String = Buffer.from(arrayBuffer).toString("base64");
+          const imageUrl = `data:${imageBlob.type};base64,${base64String}`;
 
           return {
             ...daily,
