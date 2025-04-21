@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#fef2f2"/>
+
+  <!-- Pattern -->
+  <path d="M0 0h800v600H0z" fill="#fef2f2" fill-opacity=".8"/>
+  <path d="M400 250a100 100 0 0 1 100 100 100 100 0 0 1-100 100 100 100 0 0 1-100-100 100 100 0 0 1 100-100z" stroke="#cc3249" stroke-width="4" stroke-opacity=".2"/>
+  <path d="M400 270a80 80 0 0 1 80 80 80 80 0 0 1-80 80 80 80 0 0 1-80-80 80 80 0 0 1 80-80z" stroke="#cc3249" stroke-width="3" stroke-opacity=".15"/>
+
+  <!-- Icon -->
+  <path d="M400 290a60 60 0 0 1 60 60 60 60 0 0 1-60 60 60 60 0 0 1-60-60 60 60 0 0 1 60-60z" fill="#cc3249" fill-opacity=".1"/>
+  <path d="M385 335v30m30-30v30m-30-15h30" stroke="#cc3249" stroke-width="4" stroke-linecap="round" stroke-opacity=".3"/>
+
+  <!-- Text -->
+  <text x="400" y="450" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#cc3249" fill-opacity=".4" text-anchor="middle">No Image</text>
+</svg>
