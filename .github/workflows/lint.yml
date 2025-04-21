@@ -17,10 +17,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.11.0
-          cache: "yarn"
+          cache: "pnpm"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup pnpm
+        run: corepack prepare pnpm@8.15.5 --activate
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install
 
       - name: Run ESLint
-        run: yarn lint
+        run: pnpm lint
