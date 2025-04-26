@@ -39,63 +39,95 @@ const generateMockDailyDetail = (dailyId: number) => ({
   ),
 });
 
+// 이미지를 Base64로 변환하는 유틸리티 함수
+async function imageUrlToBase64(imageUrl: string): Promise<string> {
+  const response = await fetch(imageUrl);
+  const blob = await response.blob();
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      resolve(base64String);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+// MSW 핸들러를 위한 이미지 URL 생성 함수
+const createImageUrl = (dailyId: number) =>
+  `https://picsum.photos/seed/${dailyId}/800/600`;
+
+// 데이터와 이미지를 함께 처리하는 핸들러 생성 함수
+const createHandlers = (pageSize: number, maxPages: number) => [
+  http.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/daily/all`,
+    async ({ request }) => {
+      const url = new URL(request.url);
+      const page = parseInt(url.searchParams.get("page") || "1");
+
+      // 페이지가 최대 페이지를 초과하면 빈 결과 반환
+      if (page > maxPages) {
+        return HttpResponse.json({
+          dailies: [],
+          currentPage: page,
+          isEnd: true,
+        });
+      }
+
+      const isLastPage = page === maxPages;
+      const currentPageSize = isLastPage ? Math.min(pageSize, 10) : pageSize;
+
+      // 기본 데이터 생성
+      const dailies = await Promise.all(
+        Array.from({ length: currentPageSize }, async (_, i) => {
+          const daily = generateMockDaily(page, i);
+          const details = generateMockDailyDetail(daily.dailyId);
+          const imageUrl = createImageUrl(daily.dailyId);
+
+          try {
+            // 이미지를 Base64로 변환
+            const base64Image = await imageUrlToBase64(imageUrl);
+            return {
+              ...daily,
+              ...details,
+              imageUrl: base64Image,
+            };
+          } catch (error) {
+            console.error(
+              `Failed to load image for daily ${daily.dailyId}:`,
+              error
+            );
+            return {
+              ...daily,
+              ...details,
+              imageUrl: "/placeholder.svg",
+            };
+          }
+        })
+      );
+
+      return HttpResponse.json({
+        dailies,
+        currentPage: page,
+        isEnd: isLastPage,
+      });
+    }
+  ),
+  // picsum.photos 요청을 위한 패스스루 핸들러
+  http.get("https://picsum.photos/*", async ({ request }) => {
+    return fetch(request);
+  }),
+];
+
 const meta = {
   title: "Feed/FeedContent",
   component: FeedContent,
   parameters: {
     layout: "fullscreen",
     msw: {
-      handlers: [
-        // 기본 데이터 (2개)
-        http.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/daily/all`,
-          ({ request }) => {
-            const url = new URL(request.url);
-            const page = parseInt(url.searchParams.get("page") || "1");
-
-            if (page === 1) {
-              return HttpResponse.json({
-                dailies: Array.from({ length: 2 }, (_, i) =>
-                  generateMockDaily(1, i)
-                ),
-                currentPage: 1,
-                isEnd: true,
-              });
-            }
-
-            return HttpResponse.json({
-              dailies: [],
-              currentPage: page,
-              isEnd: true,
-            });
-          }
-        ),
-        // 상세 정보
-        http.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/daily/:dailyId`,
-          ({ params }) => {
-            const dailyId = Number(params.dailyId);
-            return HttpResponse.json(generateMockDailyDetail(dailyId));
-          }
-        ),
-        // 이미지
-        http.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/daily/:dailyId/image`,
-          async ({ params }) => {
-            const dailyId = Number(params.dailyId);
-            const imageUrl = `https://picsum.photos/seed/${dailyId}/800/600`;
-
-            const response = await fetch(imageUrl);
-            const blob = await response.blob();
-
-            return new HttpResponse(blob, {
-              headers: {
-                "Content-Type": "image/jpeg",
-              },
-            });
-          }
-        ),
-      ],
+      handlers: createHandlers(2, 1), // Default: 2개 데이터, 1페이지
     },
   },
 } satisfies Meta<typeof FeedContent>;
@@ -106,100 +138,20 @@ type Story = StoryObj<typeof meta>;
 // 기본 스토리 (2개 데이터)
 export const Default: Story = {};
 
-// 20개 데이터
+// 20개 데이터 (10개씩 2페이지)
 export const MediumDataSet: Story = {
   parameters: {
     msw: {
-      handlers: [
-        http.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/daily/all`,
-          ({ request }) => {
-            const url = new URL(request.url);
-            const page = parseInt(url.searchParams.get("page") || "1");
-            const isLastPage = page >= 2;
-
-            return HttpResponse.json({
-              dailies: Array.from({ length: 10 }, (_, i) =>
-                generateMockDaily(page, i)
-              ),
-              currentPage: page,
-              isEnd: isLastPage,
-            });
-          }
-        ),
-        http.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/daily/:dailyId`,
-          ({ params }) => {
-            const dailyId = Number(params.dailyId);
-            return HttpResponse.json(generateMockDailyDetail(dailyId));
-          }
-        ),
-        http.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/daily/:dailyId/image`,
-          async ({ params }) => {
-            const dailyId = Number(params.dailyId);
-            const imageUrl = `https://picsum.photos/seed/${dailyId}/800/600`;
-
-            const response = await fetch(imageUrl);
-            const blob = await response.blob();
-
-            return new HttpResponse(blob, {
-              headers: {
-                "Content-Type": "image/jpeg",
-              },
-            });
-          }
-        ),
-      ],
+      handlers: createHandlers(10, 2),
     },
   },
 };
 
-// 100개 데이터
+// 100개 데이터 (10개씩 10페이지)
 export const LargeDataSet: Story = {
   parameters: {
     msw: {
-      handlers: [
-        http.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/daily/all`,
-          ({ request }) => {
-            const url = new URL(request.url);
-            const page = parseInt(url.searchParams.get("page") || "1");
-            const isLastPage = page >= 10;
-
-            return HttpResponse.json({
-              dailies: Array.from({ length: 10 }, (_, i) =>
-                generateMockDaily(page, i)
-              ),
-              currentPage: page,
-              isEnd: isLastPage,
-            });
-          }
-        ),
-        http.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/daily/:dailyId`,
-          ({ params }) => {
-            const dailyId = Number(params.dailyId);
-            return HttpResponse.json(generateMockDailyDetail(dailyId));
-          }
-        ),
-        http.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/daily/:dailyId/image`,
-          async ({ params }) => {
-            const dailyId = Number(params.dailyId);
-            const imageUrl = `https://picsum.photos/seed/${dailyId}/800/600`;
-
-            const response = await fetch(imageUrl);
-            const blob = await response.blob();
-
-            return new HttpResponse(blob, {
-              headers: {
-                "Content-Type": "image/jpeg",
-              },
-            });
-          }
-        ),
-      ],
+      handlers: createHandlers(10, 10),
     },
   },
 };
