@@ -99,7 +99,7 @@ export default function ProfileCreatePage() {
       />
 
       <div className="flex-1 px-4 py-4">
-        <h2 className="mb-4 text-2xl font-bold text-red-950">프로필 수정</h2>
+        <h2 className="mb-4 text-2xl font-bold text-red-950">프로필 생성</h2>
 
         {error && (
           <div className="mb-4 rounded-lg bg-red-100 p-4 text-red-950">
