@@ -2,6 +2,7 @@
 
 import { Home, MessageCircle, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export interface FooterProps {
   activeTab: "home" | "messages" | "profile";
@@ -9,10 +10,24 @@ export interface FooterProps {
 }
 
 export default function Footer({ activeTab, onTabChange }: FooterProps) {
+  const router = useRouter();
+
+  const handleClick = (tab: "home" | "messages" | "profile") => {
+    onTabChange(tab);
+    switch (tab) {
+      case "home":
+        router.push("/");
+        break;
+      case "profile":
+        router.push("/profile/edit");
+        break;
+    }
+  };
+
   return (
     <nav className="sticky bottom-0 z-10 flex items-center justify-around border-t border-[#d9d9d9] bg-white py-3">
       <button
-        onClick={() => onTabChange("home")}
+        onClick={() => handleClick("home")}
         className={cn(
           "flex flex-col items-center rounded-md p-2",
           activeTab === "home" ? "text-red-600" : "text-red-950"
@@ -23,7 +38,7 @@ export default function Footer({ activeTab, onTabChange }: FooterProps) {
         <Home size={24} />
       </button>
       <button
-        onClick={() => onTabChange("messages")}
+        onClick={() => handleClick("messages")}
         className={cn(
           "flex flex-col items-center rounded-md p-2",
           activeTab === "messages" ? "text-red-600" : "text-red-950"
@@ -34,7 +49,7 @@ export default function Footer({ activeTab, onTabChange }: FooterProps) {
         <MessageCircle size={24} />
       </button>
       <button
-        onClick={() => onTabChange("profile")}
+        onClick={() => handleClick("profile")}
         className={cn(
           "flex flex-col items-center rounded-md p-2",
           activeTab === "profile" ? "text-red-600" : "text-red-950"
