@@ -14,17 +14,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8.15.5
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22.11.0
-          cache: "yarn"
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Run Storybook tests
-        run: yarn test-storybook:ci
+        run: pnpm test-storybook:ci
