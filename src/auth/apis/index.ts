@@ -36,10 +36,25 @@ export async function loginWithGoogle(
 ): Promise<TokenResponse> {
   const data: AuthorizationCodeRequest = { code, redirectUri };
 
-  return await ky
-    .post(`${API_URL}/login/google`, {
-      json: data,
-      credentials: "include",
-    })
-    .json<TokenResponse>();
+  // HACK: use fetch to avoid the issue of ky not working in development mode on edge runtime
+  // related issues:
+  // https://github.com/vercel/next.js/issues/41531
+  // https://github.com/vercel/next.js/issues/57905
+  // if (process.env.NODE_ENV === "development") {
+  const response = await fetch(`${API_URL}/login/google`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+  const responseData = await response.json();
+  return responseData;
+  // }
+
+  // const response = await ky.post(`${API_URL}/login/google`, {
+  //   body: JSON.stringify(data),
+  // });
+  // return response.json<TokenResponse>();
 }
