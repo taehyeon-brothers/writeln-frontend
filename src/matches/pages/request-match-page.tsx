@@ -1,5 +1,3 @@
-"use client";
-
 import { MatchingButton } from "../components/matching-button";
 
 export function RequestMatchPage() {
