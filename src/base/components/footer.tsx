@@ -1,22 +1,25 @@
 "use client";
 
-import { Home, MessageCircle, User } from "lucide-react";
+import { Home, User, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
 export interface FooterProps {
-  activeTab: "home" | "messages" | "profile";
-  onTabChange: (tab: "home" | "messages" | "profile") => void;
+  activeTab: "home" | "matches" | "profile";
+  onTabChange: (tab: "home" | "matches" | "profile") => void;
 }
 
 export default function Footer({ activeTab, onTabChange }: FooterProps) {
   const router = useRouter();
 
-  const handleClick = (tab: "home" | "messages" | "profile") => {
+  const handleClick = (tab: "home" | "matches" | "profile") => {
     onTabChange(tab);
     switch (tab) {
       case "home":
         router.push("/");
+        break;
+      case "matches":
+        router.push("/matches");
         break;
       case "profile":
         router.push("/profile/edit");
@@ -38,15 +41,15 @@ export default function Footer({ activeTab, onTabChange }: FooterProps) {
         <Home size={24} />
       </button>
       <button
-        onClick={() => handleClick("messages")}
+        onClick={() => handleClick("matches")}
         className={cn(
           "flex flex-col items-center rounded-md p-2",
-          activeTab === "messages" ? "text-red-600" : "text-red-950"
+          activeTab === "matches" ? "text-red-600" : "text-red-950"
         )}
-        aria-label="Messages"
-        aria-current={activeTab === "messages" ? "page" : undefined}
+        aria-label="Matches"
+        aria-current={activeTab === "matches" ? "page" : undefined}
       >
-        <MessageCircle size={24} />
+        <Heart size={24} />
       </button>
       <button
         onClick={() => handleClick("profile")}

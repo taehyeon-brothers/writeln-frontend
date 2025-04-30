@@ -19,7 +19,7 @@ import type { UpdateUserRequest } from "../apis/types";
 import { useRouter } from "next/navigation";
 
 export default function ProfileCreatePage() {
-  const [activeTab, setActiveTab] = useState<"home" | "messages" | "profile">(
+  const [activeTab, setActiveTab] = useState<"home" | "matches" | "profile">(
     "profile"
   );
   const [formData, setFormData] = useState<UpdateUserRequest>({

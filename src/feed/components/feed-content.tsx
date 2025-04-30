@@ -25,7 +25,7 @@ export default function FeedContent() {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<"home" | "messages" | "profile">(
+  const [activeTab, setActiveTab] = useState<"home" | "matches" | "profile">(
     "home"
   );
 
