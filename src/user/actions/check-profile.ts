@@ -20,7 +20,6 @@ export async function checkUserProfile(
     return { isComplete: true };
   }
 
-  // TODO: separate check for login status and profile completion
   // Check login status
   const cookieStore = cookies();
   const accessToken = cookieStore.get("accessToken");
@@ -29,17 +28,18 @@ export async function checkUserProfile(
     redirect("/sign-in");
   }
 
+  let profile;
   try {
-    const profile = await getCurrentUserProfile();
-    const isComplete = checkProfileCompletion(profile);
-
-    if (!isComplete) {
-      redirect("/profile/create");
-    }
-
-    return { isComplete: true };
+    profile = await getCurrentUserProfile();
   } catch (error) {
     console.error("Error checking user profile:", error);
     redirect("/sign-in");
   }
+
+  const isComplete = checkProfileCompletion(profile);
+  if (!isComplete) {
+    redirect("/profile/create");
+  }
+
+  return { isComplete: true };
 }
