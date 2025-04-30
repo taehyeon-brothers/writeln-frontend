@@ -43,11 +43,11 @@ export default function FeedContent() {
     setIsLoadingMore(true);
 
     try {
-      const data = await getFeedData(nextPage);
+      const { dailies, currentPage, isEnd } = await getFeedData(nextPage);
       setFeedState((prev) => ({
-        dailies: [...prev.dailies, ...data.dailies],
-        currentPage: data.currentPage,
-        isEnd: data.isEnd,
+        dailies: [...prev.dailies, ...dailies],
+        currentPage,
+        isEnd,
         isLoading: false,
       }));
     } catch (error) {
