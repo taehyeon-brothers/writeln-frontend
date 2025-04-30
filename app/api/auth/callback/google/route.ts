@@ -7,7 +7,7 @@ import { checkProfileCompletion } from "@/src/user/helpers/profile";
 import { getCurrentUserProfile } from "@/src/user/apis";
 
 export async function GET(request: NextRequest) {
-  console.log("request", request);
+  // console.log("request", request);
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
 
