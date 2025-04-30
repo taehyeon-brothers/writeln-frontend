@@ -5,8 +5,8 @@ import Footer from "./footer";
 
 // 1. Context 생성
 const FooterContext = createContext<{
-  activeTab: "home" | "messages" | "profile";
-  setActiveTab: (tab: "home" | "messages" | "profile") => void;
+  activeTab: "home" | "matches" | "profile";
+  setActiveTab: (tab: "home" | "matches" | "profile") => void;
 }>(null!);
 
 // 2. Context Provider 컴포넌트
@@ -15,9 +15,9 @@ const FooterProvider = ({
   initialTab = "home",
 }: {
   children: React.ReactNode;
-  initialTab?: "home" | "messages" | "profile";
+  initialTab?: "home" | "matches" | "profile";
 }) => {
-  const [activeTab, setActiveTab] = useState<"home" | "messages" | "profile">(
+  const [activeTab, setActiveTab] = useState<"home" | "matches" | "profile">(
     initialTab
   );
   return (
