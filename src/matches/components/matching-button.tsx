@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "../../base/components/button";
 import { Loader2 } from "lucide-react";
-import { requestMatch } from "../api";
+import { requestMatchAction } from "../actions";
 import { toast } from "sonner";
 
 export function MatchingButton() {
@@ -12,7 +12,7 @@ export function MatchingButton() {
   const handleClick = async () => {
     try {
       setIsLoading(true);
-      await requestMatch();
+      await requestMatchAction();
       toast.success("매칭이 완료되었습니다!");
     } catch (error) {
       toast.error("매칭에 실패했습니다. 다시 시도해주세요.");
