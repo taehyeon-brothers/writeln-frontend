@@ -22,7 +22,11 @@ export function MatchingButton() {
   };
 
   return (
-    <Button onClick={handleClick} disabled={isLoading} className="w-full">
+    <Button
+      onClick={handleClick}
+      disabled={isLoading}
+      className="w-full bg-red-400 hover:bg-red-500"
+    >
       {isLoading ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" />
