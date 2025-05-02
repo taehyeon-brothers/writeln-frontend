@@ -12,7 +12,6 @@ interface MatchedUserCardProps {
 }
 
 export function MatchedUserCard({
-  userId,
   tags,
   nickname,
   age,
