@@ -9,8 +9,6 @@ import {
 } from "@/src/base/components/avatar";
 import { Card } from "@/src/base/components/card";
 import { Badge } from "@/src/base/components/badge";
-import Header from "@/src/base/components/header";
-import Footer from "@/src/base/components/footer";
 import { getFeedData } from "@/app/actions/daily";
 import type { FeedState } from "@/src/daily/types/feed";
 
