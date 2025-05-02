@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import { MatchedUserCard } from "./matched-user-card";
 
-interface MatchedUser {
+export interface MatchedUser {
   userId: number;
   tags: string[];
   nickname: string;
