@@ -3,26 +3,34 @@
 import { useState } from "react";
 import { Button } from "../../base/components/button";
 import { Loader2 } from "lucide-react";
-import { requestMatchAction } from "../actions";
-import { toast } from "sonner";
+import { matchUsers } from "../actions";
+import type { MatchedUser } from "./matched-users-slider";
 
-export function MatchingButton() {
+interface MatchingButtonProps {
+  onMatchSuccess: (users: MatchedUser[]) => void;
+}
+
+export function MatchingButton({ onMatchSuccess }: MatchingButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
     try {
       setIsLoading(true);
-      await requestMatchAction();
-      toast.success("매칭이 완료되었습니다!");
+      const matchedUsers = await matchUsers();
+      onMatchSuccess(matchedUsers);
     } catch (error) {
-      toast.error("매칭에 실패했습니다. 다시 시도해주세요.");
+      console.error("Failed to match users:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Button onClick={handleClick} disabled={isLoading} className="w-full">
+    <Button
+      onClick={handleClick}
+      disabled={isLoading}
+      className="w-full bg-red-400 hover:bg-red-500"
+    >
       {isLoading ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" />
