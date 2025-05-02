@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "../../base/components/button";
 import { Loader2 } from "lucide-react";
 import { matchUsers } from "../actions";
-import type { MatchedUser } from "../api/types";
+import type { MatchedUser } from "./matched-users-slider";
 
 interface MatchingButtonProps {
   onMatchSuccess: (users: MatchedUser[]) => void;

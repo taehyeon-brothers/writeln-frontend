@@ -2,7 +2,8 @@
 
 import { requestMatch } from "../api";
 import { getUserProfileById } from "../../user/apis";
-import type { MatchedUser, MatchResponse } from "../api/types";
+import type { MatchedUser } from "../components/matched-users-slider";
+import type { MatchResponse } from "../api/types";
 
 export async function requestMatchAction(): Promise<MatchResponse> {
   try {
@@ -24,7 +25,13 @@ export async function matchUsers(): Promise<MatchedUser[]> {
 
     // 3. 태그 정보와 사용자 정보 결합
     return userDetails.map((user) => ({
-      ...user,
+      userId: user.id,
+      nickname: user.nickname,
+      age: user.age ?? undefined,
+      gender: user.gender ?? undefined,
+      introduction: user.introduction ?? undefined,
+      profileImageUrl: user.profileImageUrl ?? undefined,
+      openChatUrl: user.openChatUrl ?? undefined,
       tags: matchResponse.matchedUsersWithTags[user.id] || [],
     }));
   } catch (error) {
