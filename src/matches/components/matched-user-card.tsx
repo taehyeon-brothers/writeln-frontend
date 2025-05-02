@@ -1,5 +1,3 @@
-"use server";
-
 import { Badge } from "@/src/base/components/badge";
 
 interface MatchedUserCardProps {
