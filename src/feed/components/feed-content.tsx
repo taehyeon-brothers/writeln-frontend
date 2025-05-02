@@ -9,8 +9,6 @@ import {
 } from "@/src/base/components/avatar";
 import { Card } from "@/src/base/components/card";
 import { Badge } from "@/src/base/components/badge";
-import Header from "@/src/base/components/header";
-import Footer from "@/src/base/components/footer";
 import { getFeedData } from "@/app/actions/daily";
 import type { FeedState } from "@/src/daily/types/feed";
 
@@ -24,10 +22,6 @@ export default function FeedContent() {
 
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-
-  const [activeTab, setActiveTab] = useState<"home" | "matches" | "profile">(
-    "home"
-  );
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const intersection = useIntersection(loadMoreRef, {
@@ -85,11 +79,6 @@ export default function FeedContent() {
   if (isInitialLoading) {
     return (
       <main className="flex min-h-screen flex-col bg-[#fef2f2]">
-        <Header
-          onNotificationClick={() => {
-            console.log("Notification clicked");
-          }}
-        />
         <div className="flex-1 px-4 py-2 overflow-auto">
           <div className="space-y-4">
             {[1, 2].map((key) => (
@@ -109,19 +98,12 @@ export default function FeedContent() {
             ))}
           </div>
         </div>
-        <Footer activeTab={activeTab} onTabChange={setActiveTab} />
       </main>
     );
   }
 
   return (
     <main className="flex min-h-screen flex-col bg-[#fef2f2]">
-      <Header
-        onNotificationClick={() => {
-          console.log("Notification clicked");
-        }}
-      />
-
       <div className="flex-1 px-4 py-2 overflow-auto">
         <ul className="space-y-4">
           {feedState.dailies.map((daily) => (
@@ -181,8 +163,6 @@ export default function FeedContent() {
           )}
         </div>
       </div>
-
-      <Footer activeTab={activeTab} onTabChange={setActiveTab} />
     </main>
   );
 }

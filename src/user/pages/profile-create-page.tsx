@@ -12,16 +12,11 @@ import {
   SelectValue,
 } from "@/src/base/components/select";
 import { Button } from "@/src/base/components/button";
-import Header from "@/src/base/components/header";
-import Footer from "@/src/base/components/footer";
 import { updateProfileAction } from "../actions/profile";
 import type { UpdateUserRequest } from "../apis/types";
 import { useRouter } from "next/navigation";
 
 export default function ProfileCreatePage() {
-  const [activeTab, setActiveTab] = useState<"home" | "matches" | "profile">(
-    "profile"
-  );
   const [formData, setFormData] = useState<UpdateUserRequest>({
     nickname: "",
     gender: undefined,
@@ -87,17 +82,6 @@ export default function ProfileCreatePage() {
 
   return (
     <main className="flex min-h-screen flex-col bg-[#fef2f2]">
-      <Header
-        onNotificationClick={() => {
-          // TODO: Implement notification click handler
-          console.log("Notification clicked");
-        }}
-        // onCameraClick={() => {
-        //   // TODO: Implement camera click handler
-        //   console.log("Camera clicked");
-        // }}
-      />
-
       <div className="flex-1 px-4 py-4">
         <h2 className="mb-4 text-2xl font-bold text-red-950">프로필 생성</h2>
 
@@ -208,8 +192,6 @@ export default function ProfileCreatePage() {
           </Button>
         </form>
       </div>
-
-      <Footer activeTab={activeTab} onTabChange={setActiveTab} />
     </main>
   );
 }
